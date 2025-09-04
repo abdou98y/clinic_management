@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Blood Pressure Reference Ranges -->
+        <record id="bp_ref_normal_adult" model="clinic.vital.signs.reference">
+            <field name="name">Normal Blood Pressure - Adult</field>
+            <field name="vital_sign_type">blood_pressure</field>
+            <field name="age_group">adult</field>
+            <field name="gender">both</field>
+            <field name="systolic_min">90</field>
+            <field name="systolic_max">120</field>
+            <field name="diastolic_min">60</field>
+            <field name="diastolic_max">80</field>
+            <field name="category">normal</field>
+            <field name="description">Normal blood pressure range for healthy adults</field>
+        </record>
+
+        <record id="bp_ref_elevated_adult" model="clinic.vital.signs.reference">
+            <field name="name">Elevated Blood Pressure - Adult</field>
+            <field name="vital_sign_type">blood_pressure</field>
+            <field name="age_group">adult</field>
+            <field name="gender">both</field>
+            <field name="systolic_min">120</field>
+            <field name="systolic_max">129</field>
+            <field name="diastolic_min">60</field>
+            <field name="diastolic_max">80</field>
+            <field name="category">elevated</field>
+            <field name="description">Elevated blood pressure - increased risk</field>
+        </record>
+
+        <record id="bp_ref_stage1_adult" model="clinic.vital.signs.reference">
+            <field name="name">Stage 1 Hypertension - Adult</field>
+            <field name="vital_sign_type">blood_pressure</field>
+            <field name="age_group">adult</field>
+            <field name="gender">both</field>
+            <field name="systolic_min">130</field>
+            <field name="systolic_max">139</field>
+            <field name="diastolic_min">80</field>
+            <field name="diastolic_max">89</field>
+            <field name="category">stage1</field>
+            <field name="description">Stage 1 Hypertension - requires monitoring and lifestyle changes</field>
+        </record>
+
+        <record id="bp_ref_stage2_adult" model="clinic.vital.signs.reference">
+            <field name="name">Stage 2 Hypertension - Adult</field>
+            <field name="vital_sign_type">blood_pressure</field>
+            <field name="age_group">adult</field>
+            <field name="gender">both</field>
+            <field name="systolic_min">140</field>
+            <field name="systolic_max">179</field>
+            <field name="diastolic_min">90</field>
+            <field name="diastolic_max">119</field>
+            <field name="category">stage2</field>
+            <field name="description">Stage 2 Hypertension - requires medication and lifestyle changes</field>
+        </record>
+
+        <record id="bp_ref_crisis_adult" model="clinic.vital.signs.reference">
+            <field name="name">Hypertensive Crisis - Adult</field>
+            <field name="vital_sign_type">blood_pressure</field>
+            <field name="age_group">adult</field>
+            <field name="gender">both</field>
+            <field name="systolic_min">180</field>
+            <field name="systolic_max">250</field>
+            <field name="diastolic_min">120</field>
+            <field name="diastolic_max">150</field>
+            <field name="category">crisis</field>
+            <field name="description">Hypertensive Crisis - requires immediate medical attention</field>
+        </record>
+
+        <!-- Heart Rate Reference Ranges -->
+        <record id="hr_ref_normal_adult" model="clinic.vital.signs.reference">
+            <field name="name">Normal Heart Rate - Adult</field>
+            <field name="vital_sign_type">heart_rate</field>
+            <field name="age_group">adult</field>
+            <field name="gender">both</field>
+            <field name="heart_rate_min">60</field>
+            <field name="heart_rate_max">100</field>
+            <field name="category">normal</field>
+            <field name="description">Normal resting heart rate for adults</field>
+        </record>
+
+        <record id="hr_ref_bradycardia_adult" model="clinic.vital.signs.reference">
+            <field name="name">Bradycardia - Adult</field>
+            <field name="vital_sign_type">heart_rate</field>
+            <field name="age_group">adult</field>
+            <field name="gender">both</field>
+            <field name="heart_rate_min">30</field>
+            <field name="heart_rate_max">59</field>
+            <field name="category">low</field>
+            <field name="description">Bradycardia - slow heart rate</field>
+        </record>
+
+        <record id="hr_ref_tachycardia_adult" model="clinic.vital.signs.reference">
+            <field name="name">Tachycardia - Adult</field>
+            <field name="vital_sign_type">heart_rate</field>
+            <field name="age_group">adult</field>
+            <field name="gender">both</field>
+            <field name="heart_rate_min">101</field>
+            <field name="heart_rate_max">200</field>
+            <field name="category">high</field>
+            <field name="description">Tachycardia - fast heart rate</field>
+        </record>
+
+        <!-- Temperature Reference Ranges -->
+        <record id="temp_ref_normal_adult" model="clinic.vital.signs.reference">
+            <field name="name">Normal Temperature - Adult</field>
+            <field name="vital_sign_type">temperature</field>
+            <field name="age_group">adult</field>
+            <field name="gender">both</field>
+            <field name="temperature_min">36.1</field>
+            <field name="temperature_max">37.2</field>
+            <field name="category">normal</field>
+            <field name="description">Normal body temperature range</field>
+        </record>
+
+        <record id="temp_ref_fever_adult" model="clinic.vital.signs.reference">
+            <field name="name">Fever - Adult</field>
+            <field name="vital_sign_type">temperature</field>
+            <field name="age_group">adult</field>
+            <field name="gender">both</field>
+            <field name="temperature_min">37.3</field>
+            <field name="temperature_max">42.0</field>
+            <field name="category">high</field>
+            <field name="description">Fever - elevated body temperature</field>
+        </record>
+
+        <record id="temp_ref_hypothermia_adult" model="clinic.vital.signs.reference">
+            <field name="name">Hypothermia - Adult</field>
+            <field name="vital_sign_type">temperature</field>
+            <field name="age_group">adult</field>
+            <field name="gender">both</field>
+            <field name="temperature_min">30.0</field>
+            <field name="temperature_max">36.0</field>
+            <field name="category">low</field>
+            <field name="description">Hypothermia - dangerously low body temperature</field>
+        </record>
+
+        <!-- Respiratory Rate Reference Ranges -->
+        <record id="rr_ref_normal_adult" model="clinic.vital.signs.reference">
+            <field name="name">Normal Respiratory Rate - Adult</field>
+            <field name="vital_sign_type">respiratory_rate</field>
+            <field name="age_group">adult</field>
+            <field name="gender">both</field>
+            <field name="respiratory_rate_min">12</field>
+            <field name="respiratory_rate_max">20</field>
+            <field name="category">normal</field>
+            <field name="description">Normal respiratory rate for adults at rest</field>
+        </record>
+
+        <record id="rr_ref_bradypnea_adult" model="clinic.vital.signs.reference">
+            <field name="name">Bradypnea - Adult</field>
+            <field name="vital_sign_type">respiratory_rate</field>
+            <field name="age_group">adult</field>
+            <field name="gender">both</field>
+            <field name="respiratory_rate_min">6</field>
+            <field name="respiratory_rate_max">11</field>
+            <field name="category">low</field>
+            <field name="description">Bradypnea - abnormally slow breathing</field>
+        </record>
+
+        <record id="rr_ref_tachypnea_adult" model="clinic.vital.signs.reference">
+            <field name="name">Tachypnea - Adult</field>
+            <field name="vital_sign_type">respiratory_rate</field>
+            <field name="age_group">adult</field>
+            <field name="gender">both</field>
+            <field name="respiratory_rate_min">21</field>
+            <field name="respiratory_rate_max">40</field>
+            <field name="category">high</field>
+            <field name="description">Tachypnea - abnormally fast breathing</field>
+        </record>
+
+        <!-- Oxygen Saturation Reference Ranges -->
+        <record id="o2_ref_normal_adult" model="clinic.vital.signs.reference">
+            <field name="name">Normal Oxygen Saturation - Adult</field>
+            <field name="vital_sign_type">oxygen_saturation</field>
+            <field name="age_group">adult</field>
+            <field name="gender">both</field>
+            <field name="oxygen_saturation_min">95.0</field>
+            <field name="oxygen_saturation_max">100.0</field>
+            <field name="category">normal</field>
+            <field name="description">Normal oxygen saturation levels</field>
+        </record>
+
+        <record id="o2_ref_low_adult" model="clinic.vital.signs.reference">
+            <field name="name">Low Oxygen Saturation - Adult</field>
+            <field name="vital_sign_type">oxygen_saturation</field>
+            <field name="age_group">adult</field>
+            <field name="gender">both</field>
+            <field name="oxygen_saturation_min">85.0</field>
+            <field name="oxygen_saturation_max">94.9</field>
+            <field name="category">low</field>
+            <field name="description">Low oxygen saturation - requires attention</field>
+        </record>
+
+        <!-- BMI Reference Ranges -->
+        <record id="bmi_ref_underweight_adult" model="clinic.vital.signs.reference">
+            <field name="name">Underweight BMI - Adult</field>
+            <field name="vital_sign_type">bmi</field>
+            <field name="age_group">adult</field>
+            <field name="gender">both</field>
+            <field name="bmi_min">10.0</field>
+            <field name="bmi_max">18.4</field>
+            <field name="category">underweight</field>
+            <field name="description">Underweight BMI category</field>
+        </record>
+
+        <record id="bmi_ref_normal_adult" model="clinic.vital.signs.reference">
+            <field name="name">Normal BMI - Adult</field>
+            <field name="vital_sign_type">bmi</field>
+            <field name="age_group">adult</field>
+            <field name="gender">both</field>
+            <field name="bmi_min">18.5</field>
+            <field name="bmi_max">24.9</field>
+            <field name="category">normal</field>
+            <field name="description">Normal weight BMI category</field>
+        </record>
+
+        <record id="bmi_ref_overweight_adult" model="clinic.vital.signs.reference">
+            <field name="name">Overweight BMI - Adult</field>
+            <field name="vital_sign_type">bmi</field>
+            <field name="age_group">adult</field>
+            <field name="gender">both</field>
+            <field name="bmi_min">25.0</field>
+            <field name="bmi_max">29.9</field>
+            <field name="category">overweight</field>
+            <field name="description">Overweight BMI category</field>
+        </record>
+
+        <record id="bmi_ref_obese1_adult" model="clinic.vital.signs.reference">
+            <field name="name">Obese Class I BMI - Adult</field>
+            <field name="vital_sign_type">bmi</field>
+            <field name="age_group">adult</field>
+            <field name="gender">both</field>
+            <field name="bmi_min">30.0</field>
+            <field name="bmi_max">34.9</field>
+            <field name="category">obese_class1</field>
+            <field name="description">Obese Class I BMI category</field>
+        </record>
+
+        <record id="bmi_ref_obese2_adult" model="clinic.vital.signs.reference">
+            <field name="name">Obese Class II BMI - Adult</field>
+            <field name="vital_sign_type">bmi</field>
+            <field name="age_group">adult</field>
+            <field name="gender">both</field>
+            <field name="bmi_min">35.0</field>
+            <field name="bmi_max">39.9</field>
+            <field name="category">obese_class2</field>
+            <field name="description">Obese Class II BMI category</field>
+        </record>
+
+        <record id="bmi_ref_obese3_adult" model="clinic.vital.signs.reference">
+            <field name="name">Obese Class III BMI - Adult</field>
+            <field name="vital_sign_type">bmi</field>
+            <field name="age_group">adult</field>
+            <field name="gender">both</field>
+            <field name="bmi_min">40.0</field>
+            <field name="bmi_max">60.0</field>
+            <field name="category">obese_class3</field>
+            <field name="description">Obese Class III (Extreme Obesity) BMI category</field>
+        </record>
+
+        <!-- Pediatric Reference Ranges (examples) -->
+        <record id="hr_ref_normal_child" model="clinic.vital.signs.reference">
+            <field name="name">Normal Heart Rate - Child (2-10 years)</field>
+            <field name="vital_sign_type">heart_rate</field>
+            <field name="age_group">child</field>
+            <field name="gender">both</field>
+            <field name="heart_rate_min">70</field>
+            <field name="heart_rate_max">110</field>
+            <field name="category">normal</field>
+            <field name="description">Normal heart rate for children 2-10 years</field>
+        </record>
+
+        <record id="rr_ref_normal_child" model="clinic.vital.signs.reference">
+            <field name="name">Normal Respiratory Rate - Child (2-10 years)</field>
+            <field name="vital_sign_type">respiratory_rate</field>
+            <field name="age_group">child</field>
+            <field name="gender">both</field>
+            <field name="respiratory_rate_min">20</field>
+            <field name="respiratory_rate_max">30</field>
+            <field name="category">normal</field>
+            <field name="description">Normal respiratory rate for children 2-10 years</field>
+        </record>
+
+    </data>
+</odoo>
+

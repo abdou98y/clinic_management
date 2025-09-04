@@ -1,0 +1,272 @@
+/* Clinic Management System Styles */
+
+/* Patient Card Styling */
+.clinic_patient_card {
+    border-left: 4px solid #2E86AB;
+    background-color: #f8f9fa;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.clinic_patient_card .patient_name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #2E86AB;
+    margin-bottom: 5px;
+}
+
+.clinic_patient_card .patient_id {
+    font-size: 14px;
+    color: #666;
+    font-family: monospace;
+}
+
+/* Vital Signs Styling */
+.vital_signs_container {
+    background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 100%);
+    border: 1px solid #2E86AB;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 10px 0;
+}
+
+.vital_signs_header {
+    color: #2E86AB;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.vital_signs_header i {
+    margin-right: 8px;
+    font-size: 18px;
+}
+
+.vital_sign_item {
+    display: inline-block;
+    margin: 5px 15px 5px 0;
+    padding: 8px 12px;
+    background-color: white;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    min-width: 120px;
+}
+
+.vital_sign_label {
+    font-size: 12px;
+    color: #666;
+    display: block;
+    margin-bottom: 2px;
+}
+
+.vital_sign_value {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Blood Pressure Categories */
+.bp_normal { color: #28a745; }
+.bp_elevated { color: #ffc107; }
+.bp_stage1 { color: #fd7e14; }
+.bp_stage2 { color: #dc3545; }
+.bp_crisis { color: #721c24; background-color: #f8d7da; }
+
+/* BMI Categories */
+.bmi_underweight { color: #17a2b8; }
+.bmi_normal { color: #28a745; }
+.bmi_overweight { color: #ffc107; }
+.bmi_obese { color: #dc3545; }
+
+/* Prescription Styling */
+.prescription_container {
+    background-color: #fff;
+    border: 2px solid #2E86AB;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 15px 0;
+}
+
+.prescription_header {
+    border-bottom: 2px solid #2E86AB;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.prescription_number {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2E86AB;
+    font-family: monospace;
+}
+
+.medication_line {
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+}
+
+.medication_line:last-child {
+    border-bottom: none;
+}
+
+.medication_name {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+.medication_strength {
+    font-size: 14px;
+    color: #666;
+    margin-left: 10px;
+}
+
+.controlled_substance_badge {
+    background-color: #ffc107;
+    color: #212529;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: bold;
+    margin-left: 8px;
+}
+
+/* Alert Styling */
+.clinic_alert {
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin: 10px 0;
+    border-left: 4px solid;
+}
+
+.clinic_alert_danger {
+    background-color: #f8d7da;
+    border-left-color: #dc3545;
+    color: #721c24;
+}
+
+.clinic_alert_warning {
+    background-color: #fff3cd;
+    border-left-color: #ffc107;
+    color: #856404;
+}
+
+.clinic_alert_info {
+    background-color: #d1ecf1;
+    border-left-color: #17a2b8;
+    color: #0c5460;
+}
+
+.clinic_alert_success {
+    background-color: #d4edda;
+    border-left-color: #28a745;
+    color: #155724;
+}
+
+/* Form Styling */
+.clinic_form_section {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 15px;
+    margin: 15px 0;
+}
+
+.clinic_form_section h4 {
+    color: #2E86AB;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+/* Button Styling */
+.btn_clinic_primary {
+    background-color: #2E86AB;
+    border-color: #2E86AB;
+    color: white;
+}
+
+.btn_clinic_primary:hover {
+    background-color: #1e5f7a;
+    border-color: #1e5f7a;
+}
+
+.btn_clinic_secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: white;
+}
+
+.btn_clinic_emergency {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: white;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(220, 53, 69, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0); }
+}
+
+/* Statistics Cards */
+.clinic_stat_card {
+    background: linear-gradient(135deg, #2E86AB 0%, #4a9bc7 100%);
+    color: white;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    margin: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.clinic_stat_number {
+    font-size: 36px;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.clinic_stat_label {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .vital_sign_item {
+        display: block;
+        margin: 5px 0;
+        width: 100%;
+    }
+    
+    .clinic_stat_card {
+        margin: 5px 0;
+    }
+    
+    .prescription_container {
+        padding: 15px;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .clinic_no_print {
+        display: none !important;
+    }
+    
+    .prescription_container {
+        border: 2px solid #000;
+        page-break-inside: avoid;
+    }
+    
+    .vital_signs_container {
+        border: 1px solid #000;
+        background: white !important;
+    }
+}
+

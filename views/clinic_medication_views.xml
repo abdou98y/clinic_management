@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Medication list View -->
+        <record id="view_clinic_medication_list" model="ir.ui.view">
+            <field name="name">clinic.medication.list</field>
+            <field name="model">clinic.medication</field>
+            <field name="arch" type="xml">
+                <list string="Medications" sample="1" decoration-warning="controlled_substance == True">
+                    <field name="name"/>
+                    <field name="strength"/>
+                    <field name="dosage_form"/>
+                    <field name="drug_class"/>
+                    <field name="route_of_administration"/>
+                    <field name="controlled_substance"/>
+                    <field name="controlled_schedule"  invisible="controlled_substance == False" />
+                    <field name="formulary_status"/>
+                    <field name="prescription_count"/>
+                    <field name="active" invisible="1"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Medication Form View -->
+        <record id="view_clinic_medication_form" model="ir.ui.view">
+            <field name="name">clinic.medication.form</field>
+            <field name="model">clinic.medication</field>
+            <field name="arch" type="xml">
+                <form string="Medication">
+                    <header>
+                        <button name="action_view_prescriptions" type="object" 
+                                string="View Prescriptions" class="btn-primary"
+                                invisible= "prescription_count == 0"/>
+                        <button name="duplicate_medication" type="object" 
+                                string="Duplicate" class="btn-secondary"/>
+                        <button name="toggle_active" type="object" 
+                                string="Archive" class="btn-secondary"
+                                invisible="active == False" />
+                        <button name="toggle_active" type="object" 
+                                string="Unarchive" class="btn-secondary"
+                                invisible = "active == True"/>
+                        <field name="active" widget="boolean_toggle" options="{'terminology': 'archive'}"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_prescriptions" type="object" 
+                                    class="oe_stat_button" icon="fa-prescription">
+                                <field name="prescription_count" widget="statinfo" 
+                                       string="Prescriptions"/>
+                            </button>
+                        </div>
+                        
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Generic Medication Name" required="1"/>
+                            </h1>
+                            <h2>
+                                <field name="strength" placeholder="e.g., 500mg, 10mg/ml" required="1"/>
+                                <field name="dosage_form" required="1"/>
+                            </h2>
+                        </div>
+
+                        <group>
+                            <group name="basic_info" string="Basic Information">
+                                <field name="generic_name"/>
+                                <field name="drug_class" required="1"/>
+                                <field name="category_id"/>
+                                <field name="route_of_administration"/>
+                                <field name="unit_of_measure"/>
+                            </group>
+                            <group name="regulatory" string="Regulatory Information">
+                                <field name="controlled_substance"/>
+                                <field name="controlled_schedule" 
+                                       invisible="controlled_substance == False" required = "controlled_substance == True"/>
+                                <field name="formulary_status"/>
+                                <field name="preferred_generic"/>
+                                <field name="pregnancy_category"/>
+                                <field name="pediatric_use"/>
+                            </group>
+                        </group>
+
+                        <group name="manufacturer_info" string="Manufacturer Information">
+                            <group>
+                                <field name="manufacturer"/>
+                                <field name="ndc_number"/>
+                                <field name="lot_number"/>
+                            </group>
+                            <group>
+                                <field name="cost_per_unit"/>
+                                <field name="expiration_monitoring"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page name="clinical_info" string="Clinical Information">
+                                <group>
+                                    <field name="indications" placeholder="Approved medical uses and conditions treated..."/>
+                                    <field name="contraindications" placeholder="Conditions where drug should not be used..."/>
+                                    <field name="side_effects" placeholder="Common and serious adverse effects..."/>
+                                    <field name="drug_interactions" placeholder="Known drug-drug interactions..."/>
+                                    <field name="geriatric_considerations" placeholder="Special considerations for elderly patients..."/>
+                                </group>
+                            </page>
+                            
+                            <page name="dosing_info" string="Dosing Information">
+                                <group>
+                                    <field name="usual_adult_dose" placeholder="Standard adult dosing recommendations..."/>
+                                    <field name="usual_pediatric_dose" placeholder="Standard pediatric dosing recommendations..."/>
+                                    <field name="maximum_daily_dose" placeholder="Maximum safe daily dose..."/>
+                                    <field name="renal_adjustment" placeholder="Dose adjustment for kidney disease..."/>
+                                    <field name="hepatic_adjustment" placeholder="Dose adjustment for liver disease..."/>
+                                </group>
+                            </page>
+                            
+                            <page name="brand_names" string="Brand Names &amp; Storage">
+                                <group>
+                                    <field name="brand_names" placeholder="Commercial brand names (comma-separated)..."/>
+                                    <field name="storage_requirements" placeholder="Special storage conditions (temperature, light, etc.)..."/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Medication Search View
+        <record id="view_clinic_medication_search" model="ir.ui.view">
+            <field name="name">clinic.medication.search</field>
+            <field name="model">clinic.medication</field>
+            <field name="arch" type="xml">
+                <search string="Search Medications">
+                    <field name="name" string="Medication" 
+                           filter_domain="['|', '|', '|', ('name', 'ilike', self), ('generic_name', 'ilike', self), ('brand_names', 'ilike', self), ('display_name', 'ilike', self)]"/>
+                    <field name="drug_class"/>
+                    <field name="dosage_form"/>
+                    <field name="manufacturer"/>
+                    <field name="indications"/>
+                    
+                    <filter name="active_medications" string="Active Medications" 
+                            domain="[('active', '=', True)]" default="1"/>
+                    <filter name="archived_medications" string="Archived Medications" 
+                            domain="[('active', '=', False)]"/>
+                    
+                    <separator/>
+                    <filter name="controlled_substances" string="Controlled Substances" 
+                            domain="[('controlled_substance', '=', True)]"/>
+                    <filter name="non_controlled" string="Non-Controlled" 
+                            domain="[('controlled_substance', '=', False)]"/>
+                    
+                    <separator/>
+                    <filter name="on_formulary" string="On Formulary" 
+                            domain="[('formulary_status', '=', 'on_formulary')]"/>
+                    <filter name="off_formulary" string="Off Formulary" 
+                            domain="[('formulary_status', '=', 'off_formulary')]"/>
+                    <filter name="restricted" string="Restricted" 
+                            domain="[('formulary_status', '=', 'restricted')]"/>
+                    
+                    <separator/>
+                    <filter name="pediatric_safe" string="Pediatric Safe" 
+                            domain="[('pediatric_use', '=', True)]"/>
+                    <filter name="pregnancy_safe" string="Pregnancy Safe" 
+                            domain="[('pregnancy_category', 'in', ['A', 'B'])]"/>
+                    
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_drug_class" string="Drug Class" 
+                                context="{'group_by': 'drug_class'}"/>
+                        <filter name="group_by_dosage_form" string="Dosage Form" 
+                                context="{'group_by': 'dosage_form'}"/>
+                        <filter name="group_by_controlled_schedule" string="Controlled Schedule" 
+                                context="{'group_by': 'controlled_schedule'}"/>
+                        <filter name="group_by_formulary_status" string="Formulary Status" 
+                                context="{'group_by': 'formulary_status'}"/>
+                    </group>
+                </search>
+            </field>
+        </record> -->
+
+        <!-- Medication Kanban View -->
+        <record id="view_clinic_medication_kanban" model="ir.ui.view">
+            <field name="name">clinic.medication.kanban</field>
+            <field name="model">clinic.medication</field>
+            <field name="arch" type="xml">
+                <kanban string="Medications" sample="1">
+                    <field name="id"/>
+                    <field name="name"/>
+                    <field name="strength"/>
+                    <field name="dosage_form"/>
+                    <field name="drug_class"/>
+                    <field name="controlled_substance"/>
+                    <field name="controlled_schedule"/>
+                    <field name="formulary_status"/>
+                    <field name="prescription_count"/>
+                    <field name="active"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_card oe_kanban_global_click">
+                                <div class="oe_kanban_details">
+                                    <div class="o_kanban_record_top">
+                                        <div class="o_kanban_record_headings">
+                                            <strong class="o_kanban_record_title">
+                                                <field name="name"/>
+                                            </strong>
+                                            <br/>
+                                            <span class="o_kanban_record_subtitle">
+                                                <field name="strength"/> • <field name="dosage_form"/>
+                                            </span>
+                                        </div>
+                                        <div class="o_kanban_record_top_right">
+                                            <t t-if="record.controlled_substance.raw_value">
+                                                <span class="badge badge-warning">
+                                                    <field name="controlled_schedule"/>
+                                                </span>
+                                            </t>
+                                        </div>
+                                    </div>
+                                    <div class="o_kanban_record_body">
+                                        <field name="drug_class"/>
+                                        <br/>
+                                        <field name="route_of_administration"/>
+                                    </div>
+                                    <div class="o_kanban_record_bottom">
+                                        <div class="oe_kanban_bottom_left">
+                                            <span class="badge badge-pill badge-info">
+                                                <i class="fa fa-prescription"/> <field name="prescription_count"/>
+                                            </span>
+                                            <t t-if="record.formulary_status.raw_value == 'on_formulary'">
+                                                <span class="badge badge-pill badge-success">On Formulary</span>
+                                            </t>
+                                            <t t-if="record.formulary_status.raw_value == 'off_formulary'">
+                                                <span class="badge badge-pill badge-danger">Off Formulary</span>
+                                            </t>
+                                            <t t-if="record.formulary_status.raw_value == 'restricted'">
+                                                <span class="badge badge-pill badge-warning">Restricted</span>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- Medication Action -->
+        <record id="action_clinic_medication" model="ir.actions.act_window">
+            <field name="name">Medications</field>
+            <field name="res_model">clinic.medication</field>
+            <field name="view_mode">kanban,list,form</field>
+            <!-- <field name="search_view_id" ref="view_clinic_medication_search"/> -->
+            <field name="context">{'search_default_active_medications': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Add your first medication to the database
+                </p>
+                <p>
+                    Build your medication database with comprehensive drug information
+                    including dosing guidelines, contraindications, and safety information.
+                    This will enable safe and effective prescribing.
+                </p>
+            </field>
+        </record>
+
+        <!-- Medication Category list View -->
+        <record id="view_clinic_medication_category_list" model="ir.ui.view">
+            <field name="name">clinic.medication.category.list</field>
+            <field name="model">clinic.medication.category</field>
+            <field name="arch" type="xml">
+                <list string="Medication Categories">
+                    <field name="name"/>
+                    <field name="parent_id"/>
+                    <field name="medication_count"/>
+                    <field name="active" invisible="0"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Medication Category Form View -->
+        <record id="view_clinic_medication_category_form" model="ir.ui.view">
+            <field name="name">clinic.medication.category.form</field>
+            <field name="model">clinic.medication.category</field>
+            <field name="arch" type="xml">
+                <form string="Medication Category">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Category Name" required="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <field name="parent_id"/>
+                            <field name="active"/>
+                        </group>
+                        <field name="description" placeholder="Category description and usage guidelines..."/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Medication Category Action -->
+        <record id="action_clinic_medication_category" model="ir.actions.act_window">
+            <field name="name">Medication Categories</field>
+            <field name="res_model">clinic.medication.category</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+    </data>
+</odoo>
+

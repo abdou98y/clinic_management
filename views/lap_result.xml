@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_lab_result_form" model="ir.ui.view">
+        <field name="name">clinic.lab.result.form</field>
+        <field name="model">clinic.lab.result</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="patient_id"/>
+                        <field name="date"/>
+                        <field name="test_name"/>
+                        <field name="result_file" filename="result_filename"/>  <!-- Supports PDF upload -->
+                        <field name="result_image"/>  <!-- Image preview -->
+                        <field name="notes"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_lab_result_list" model="ir.ui.view">
+        <field name="name">clinic.lab.result.list</field>
+        <field name="model">clinic.lab.result</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="patient_id"/>
+                <field name="date"/>
+                <field name="test_name"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Lab result Action -->
+    <record id="action_clinic_lab_result" model="ir.actions.act_window">
+        <field name="name">Lab Results</field>
+        <field name="res_model">clinic.lab.result</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                save your  patients Lab Results
+            </p>
+        </field>
+    </record>
+
+</odoo>

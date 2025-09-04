@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Patient Summary Report Action -->
+        <record id="action_report_patient_summary" model="ir.actions.report">
+            <field name="name">Patient Summary</field>
+            <field name="model">clinic.patient</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">clinic_management.report_patient_summary_document</field>
+            <field name="report_file">clinic_management.report_patient_summary_document</field>
+            <field name="binding_model_id" ref="model_clinic_patient"/>
+            <field name="binding_type">report</field>
+            <field name="paperformat_id" ref="base.paperformat_us"/>
+        </record>
+
+        <!-- Patient Summary Report Template -->
+        <template id="report_patient_summary_document">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="patient">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <!-- Header -->
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <div class="text-center">
+                                        <h2 style="color: #2E86AB; font-weight: bold;">Patient Summary Report</h2>
+                                        <h3><span t-field="patient.company_id.name"/></h3>
+                                    </div>
+                                    <hr style="border-top: 2px solid #2E86AB;"/>
+                                </div>
+                            </div>
+
+                            <!-- Patient Information -->
+                            <div class="row mb-4">
+                                <div class="col-6">
+                                    <div style="border: 1px solid #2E86AB; padding: 15px; background-color: #f0f8ff;">
+                                        <h4 style="color: #2E86AB; margin-bottom: 15px;">Patient Information</h4>
+                                        <strong>Name:</strong> <span t-field="patient.name"/><br/>
+                                        <strong>Patient ID:</strong> <span t-field="patient.patient_id"/><br/>
+                                        <strong>Date of Birth:</strong> <span t-field="patient.date_of_birth" t-options="{'widget': 'date'}"/><br/>
+                                        <strong>Age:</strong> <span t-field="patient.age"/> years<br/>
+                                        <strong>Gender:</strong> <span t-field="patient.gender"/><br/>
+                                        <t t-if="patient.blood_group">
+                                            <strong>Blood Group:</strong> <span t-field="patient.blood_group"/><br/>
+                                        </t>
+                                        <t t-if="patient.marital_status">
+                                            <strong>Marital Status:</strong> <span t-field="patient.marital_status"/><br/>
+                                        </t>
+                                        <t t-if="patient.occupation">
+                                            <strong>Occupation:</strong> <span t-field="patient.occupation"/><br/>
+                                        </t>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div style="border: 1px solid #5cb85c; padding: 15px; background-color: #f0fff0;">
+                                        <h4 style="color: #5cb85c; margin-bottom: 15px;">Contact Information</h4>
+                                        <t t-if="patient.phone">
+                                            <strong>Phone:</strong> <span t-field="patient.phone"/><br/>
+                                        </t>
+                                        <t t-if="patient.mobile">
+                                            <strong>Mobile:</strong> <span t-field="patient.mobile"/><br/>
+                                        </t>
+                                        <t t-if="patient.email">
+                                            <strong>Email:</strong> <span t-field="patient.email"/><br/>
+                                        </t>
+                                        <t t-if="patient.street">
+                                            <strong>Address:</strong><br/>
+                                            <span t-field="patient.street"/><br/>
+                                            <t t-if="patient.street2">
+                                                <span t-field="patient.street2"/><br/>
+                                            </t>
+                                            <span t-field="patient.city"/>
+                                            <t t-if="patient.state_id">
+                                                , <span t-field="patient.state_id.name"/>
+                                            </t>
+                                            <t t-if="patient.zip">
+                                                <span t-field="patient.zip"/>
+                                            </t>
+                                            <t t-if="patient.country_id">
+                                                <br/><span t-field="patient.country_id.name"/>
+                                            </t>
+                                        </t>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Emergency Contact -->
+                            <t t-if="patient.emergency_contact_name">
+                                <div class="row mb-4">
+                                    <div class="col-12">
+                                        <div style="border: 1px solid #f0ad4e; padding: 15px; background-color: #fff8e1;">
+                                            <h4 style="color: #f0ad4e; margin-bottom: 15px;">Emergency Contact</h4>
+                                            <strong>Name:</strong> <span t-field="patient.emergency_contact_name"/><br/>
+                                            <t t-if="patient.emergency_contact_phone">
+                                                <strong>Phone:</strong> <span t-field="patient.emergency_contact_phone"/><br/>
+                                            </t>
+                                            <t t-if="patient.emergency_contact_relationship">
+                                                <strong>Relationship:</strong> <span t-field="patient.emergency_contact_relationship"/>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+
+                            <!-- Medical History -->
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <h4 style="color: #d9534f; border-bottom: 2px solid #d9534f; padding-bottom: 5px;">
+                                        Medical History
+                                    </h4>
+                                    <div class="row mt-3">
+                                        <div class="col-6">
+                                            <t t-if="patient.allergies">
+                                                <div class="alert alert-danger">
+                                                    <strong><i class="fa fa-exclamation-triangle"/> Allergies:</strong><br/>
+                                                    <span t-field="patient.allergies"/>
+                                                </div>
+                                            </t>
+                                            <t t-if="patient.chronic_conditions">
+                                                <strong>Chronic Conditions:</strong><br/>
+                                                <span t-field="patient.chronic_conditions"/><br/><br/>
+                                            </t>
+                                            <t t-if="patient.current_medications">
+                                                <strong>Current Medications:</strong><br/>
+                                                <span t-field="patient.current_medications"/><br/><br/>
+                                            </t>
+                                        </div>
+                                        <div class="col-6">
+                                            <t t-if="patient.past_treatments">
+                                                <strong>Past Treatments:</strong><br/>
+                                                <span t-field="patient.past_treatments"/><br/><br/>
+                                            </t>
+                                            <t t-if="patient.family_history">
+                                                <strong>Family History:</strong><br/>
+                                                <span t-field="patient.family_history"/><br/><br/>
+                                            </t>
+                                            <t t-if="patient.social_history">
+                                                <strong>Social History:</strong><br/>
+                                                <span t-field="patient.social_history"/>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Recent Vital Signs -->
+                            <t t-if="patient.vital_signs_ids">
+                                <div class="row mb-4">
+                                    <div class="col-12">
+                                        <h4 style="color: #2E86AB; border-bottom: 2px solid #2E86AB; padding-bottom: 5px;">
+                                            <i class="fa fa-heartbeat"/> Recent Vital Signs (Last 5 Visits)
+                                        </h4>
+                                        <table class="table table-bordered mt-3">
+                                            <thead style="background-color: #2E86AB; color: white;">
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Visit Type</th>
+                                                    <th>Blood Pressure</th>
+                                                    <th>Heart Rate</th>
+                                                    <th>Temperature</th>
+                                                    <th>Weight</th>
+                                                    <th>BMI</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <t t-foreach="patient.vital_signs_ids[:5]" t-as="vital">
+                                                    <tr>
+                                                        <td><span t-field="vital.visit_datetime" t-options="{'widget': 'date'}"/></td>
+                                                        <td><span t-field="vital.visit_type"/></td>
+                                                        <td>
+                                                            <span t-field="vital.blood_pressure_display"/>
+                                                            <t t-if="vital.bp_category and vital.bp_category != 'normal'">
+                                                                <br/><small style="color: #d9534f;">(<span t-field="vital.bp_category"/>)</small>
+                                                            </t>
+                                                        </td>
+                                                        <td><span t-field="vital.heart_rate"/> bpm</td>
+                                                        <td><span t-field="vital.temperature"/>°C</td>
+                                                        <td><span t-field="vital.weight"/> kg</td>
+                                                        <td>
+                                                            <span t-field="vital.bmi"/>
+                                                            <t t-if="vital.bmi_category">
+                                                                <br/><small>(<span t-field="vital.bmi_category"/>)</small>
+                                                            </t>
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </t>
+
+                            <!-- Recent Prescriptions -->
+                            <t t-if="patient.prescription_ids">
+                                <div class="row mb-4">
+                                    <div class="col-12">
+                                        <h4 style="color: #5cb85c; border-bottom: 2px solid #5cb85c; padding-bottom: 5px;">
+                                            <i class="fa fa-prescription"/> Recent Prescriptions (Last 5)
+                                        </h4>
+                                        <table class="table table-bordered mt-3">
+                                            <thead style="background-color: #5cb85c; color: white;">
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Prescription #</th>
+                                                    <th>Prescriber</th>
+                                                    <th>Medications</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <t t-foreach="patient.prescription_ids[:5]" t-as="prescription">
+                                                    <tr>
+                                                        <td><span t-field="prescription.prescription_date" t-options="{'widget': 'date'}"/></td>
+                                                        <td><span t-field="prescription.prescription_number"/></td>
+                                                        <td><span t-field="prescription.prescriber_id.name"/></td>
+                                                        <td>
+                                                            <t t-foreach="prescription.prescription_line_ids" t-as="line">
+                                                                <span t-field="line.medication_id.name"/>
+                                                                <t t-if="not line_last">, </t>
+                                                            </t>
+                                                        </td>
+                                                        <td><span t-field="prescription.state"/></td>
+                                                    </tr>
+                                                </t>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </t>
+
+                            <!-- Additional Notes -->
+                            <t t-if="patient.notes">
+                                <div class="row mb-4">
+                                    <div class="col-12">
+                                        <h4 style="color: #666; border-bottom: 2px solid #666; padding-bottom: 5px;">
+                                            Additional Notes
+                                        </h4>
+                                        <div style="border: 1px solid #ddd; padding: 15px; background-color: #f9f9f9; margin-top: 15px;">
+                                            <span t-field="patient.notes"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+
+                            <!-- Footer -->
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <hr/>
+                                    <div class="text-center">
+                                        <small style="color: #666;">
+                                            Report generated on <span t-esc="datetime.datetime.now().strftime('%Y-%m-%d %H:%M')"/>
+                                            <br/>
+                                            Last visit: 
+                                            <t t-if="patient.last_visit_date">
+                                                <span t-field="patient.last_visit_date" t-options="{'widget': 'date'}"/>
+                                            </t>
+                                            <t t-if="not patient.last_visit_date">
+                                                No visits recorded
+                                            </t>
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <!-- Vital Signs Trend Report -->
+        <record id="action_report_vital_signs_trend" model="ir.actions.report">
+            <field name="name">Vital Signs Trend</field>
+            <field name="model">clinic.patient</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">clinic_management.report_vital_signs_trend</field>
+            <field name="report_file">clinic_management.report_vital_signs_trend</field>
+            <field name="binding_model_id" ref="model_clinic_patient"/>
+            <field name="binding_type">report</field>
+            <field name="paperformat_id" ref="base.paperformat_us"/>
+        </record>
+
+        <template id="report_vital_signs_trend">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="patient">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <div class="text-center mb-4">
+                                <h2 style="color: #2E86AB;">Vital Signs Trend Report</h2>
+                                <h3><span t-field="patient.name"/> (<span t-field="patient.patient_id"/>)</h3>
+                                <p>Generated on <span t-esc="datetime.datetime.now().strftime('%Y-%m-%d %H:%M')"/></p>
+                            </div>
+                            
+                            <t t-if="patient.vital_signs_ids">
+                                <table class="table table-bordered">
+                                    <thead style="background-color: #2E86AB; color: white;">
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Visit Type</th>
+                                            <th>BP (mmHg)</th>
+                                            <th>HR (bpm)</th>
+                                            <th>Temp (°C)</th>
+                                            <th>RR (/min)</th>
+                                            <th>O₂ Sat (%)</th>
+                                            <th>Weight (kg)</th>
+                                            <th>BMI</th>
+                                            <th>Notes</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="patient.vital_signs_ids" t-as="vital">
+                                            <tr>
+                                                <td><span t-field="vital.visit_datetime" t-options="{'widget': 'datetime'}"/></td>
+                                                <td><span t-field="vital.visit_type"/></td>
+                                                <td>
+                                                    <span t-field="vital.blood_pressure_display"/>
+                                                    <t t-if="vital.bp_category and vital.bp_category != 'normal'">
+                                                        <br/><small style="color: #d9534f;">(<span t-field="vital.bp_category"/>)</small>
+                                                    </t>
+                                                </td>
+                                                <td><span t-field="vital.heart_rate"/></td>
+                                                <td><span t-field="vital.temperature"/></td>
+                                                <td><span t-field="vital.respiratory_rate"/></td>
+                                                <td><span t-field="vital.oxygen_saturation"/></td>
+                                                <td><span t-field="vital.weight"/></td>
+                                                <td>
+                                                    <span t-field="vital.bmi"/>
+                                                    <t t-if="vital.bmi_category">
+                                                        <br/><small>(<span t-field="vital.bmi_category"/>)</small>
+                                                    </t>
+                                                </td>
+                                                <td>
+                                                    <t t-if="vital.chief_complaint">
+                                                        <strong>CC:</strong> <span t-field="vital.chief_complaint"/><br/>
+                                                    </t>
+                                                    <t t-if="vital.diagnosis">
+                                                        <strong>Dx:</strong> <span t-field="vital.diagnosis"/>
+                                                    </t>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </t>
+                            <t t-if="not patient.vital_signs_ids">
+                                <div class="alert alert-info">
+                                    <p>No vital signs recorded for this patient.</p>
+                                </div>
+                            </t>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>
+

@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Medication Categories -->
+        <record id="category_analgesics" model="clinic.medication.category">
+            <field name="name">Analgesics</field>
+            <field name="description">Pain relief medications</field>
+            <field name="color">1</field>
+        </record>
+
+        <record id="category_antibiotics" model="clinic.medication.category">
+            <field name="name">Antibiotics</field>
+            <field name="description">Antimicrobial medications</field>
+            <field name="color">2</field>
+        </record>
+
+        <record id="category_cardiovascular" model="clinic.medication.category">
+            <field name="name">Cardiovascular</field>
+            <field name="description">Heart and blood vessel medications</field>
+            <field name="color">3</field>
+        </record>
+
+        <record id="category_diabetes" model="clinic.medication.category">
+            <field name="name">Diabetes Medications</field>
+            <field name="description">Blood sugar control medications</field>
+            <field name="color">4</field>
+        </record>
+
+        <record id="category_respiratory" model="clinic.medication.category">
+            <field name="name">Respiratory</field>
+            <field name="description">Breathing and lung medications</field>
+            <field name="color">5</field>
+        </record>
+
+        <!-- Sample Medications -->
+        
+        <!-- Analgesics -->
+        <record id="medication_acetaminophen_500mg" model="clinic.medication">
+            <field name="name">Acetaminophen</field>
+            <field name="generic_name">Acetaminophen</field>
+            <field name="brand_names">Tylenol, Panadol</field>
+            <field name="strength">500mg</field>
+            <field name="dosage_form">tablet</field>
+            <field name="drug_class">analgesic</field>
+            <field name="category_id" ref="category_analgesics"/>
+            <field name="route_of_administration">oral</field>
+            <field name="unit_of_measure">mg</field>
+            <field name="controlled_substance" eval="False"/>
+            <field name="pregnancy_category">B</field>
+            <field name="pediatric_use" eval="True"/>
+            <field name="formulary_status">on_formulary</field>
+            <field name="preferred_generic" eval="True"/>
+            <field name="indications">Pain relief, fever reduction</field>
+            <field name="contraindications">Severe liver disease, hypersensitivity to acetaminophen</field>
+            <field name="side_effects">Rare: liver toxicity with overdose, skin rash</field>
+            <field name="usual_adult_dose">500-1000mg every 4-6 hours, maximum 4000mg/day</field>
+            <field name="usual_pediatric_dose">10-15mg/kg every 4-6 hours</field>
+            <field name="maximum_daily_dose">4000mg for adults, 75mg/kg for children</field>
+            <field name="hepatic_adjustment">Reduce dose in liver disease</field>
+            <field name="cost_per_unit">0.05</field>
+        </record>
+
+        <record id="medication_ibuprofen_200mg" model="clinic.medication">
+            <field name="name">Ibuprofen</field>
+            <field name="generic_name">Ibuprofen</field>
+            <field name="brand_names">Advil, Motrin</field>
+            <field name="strength">200mg</field>
+            <field name="dosage_form">tablet</field>
+            <field name="drug_class">analgesic</field>
+            <field name="category_id" ref="category_analgesics"/>
+            <field name="route_of_administration">oral</field>
+            <field name="unit_of_measure">mg</field>
+            <field name="controlled_substance" eval="False"/>
+            <field name="pregnancy_category">C</field>
+            <field name="pediatric_use" eval="True"/>
+            <field name="formulary_status">on_formulary</field>
+            <field name="preferred_generic" eval="True"/>
+            <field name="indications">Pain relief, fever reduction, inflammation</field>
+            <field name="contraindications">Active GI bleeding, severe heart failure, hypersensitivity to NSAIDs</field>
+            <field name="side_effects">GI upset, increased bleeding risk, kidney problems</field>
+            <field name="drug_interactions">Warfarin, ACE inhibitors, lithium</field>
+            <field name="usual_adult_dose">200-400mg every 4-6 hours, maximum 1200mg/day OTC</field>
+            <field name="usual_pediatric_dose">5-10mg/kg every 6-8 hours</field>
+            <field name="maximum_daily_dose">1200mg OTC, 3200mg prescription</field>
+            <field name="renal_adjustment">Avoid in severe kidney disease</field>
+            <field name="geriatric_considerations">Use with caution, increased GI and cardiovascular risks</field>
+            <field name="cost_per_unit">0.08</field>
+        </record>
+
+        <!-- Antibiotics -->
+        <record id="medication_amoxicillin_500mg" model="clinic.medication">
+            <field name="name">Amoxicillin</field>
+            <field name="generic_name">Amoxicillin</field>
+            <field name="brand_names">Amoxil, Trimox</field>
+            <field name="strength">500mg</field>
+            <field name="dosage_form">capsule</field>
+            <field name="drug_class">antibiotic</field>
+            <field name="category_id" ref="category_antibiotics"/>
+            <field name="route_of_administration">oral</field>
+            <field name="unit_of_measure">mg</field>
+            <field name="controlled_substance" eval="False"/>
+            <field name="pregnancy_category">B</field>
+            <field name="pediatric_use" eval="True"/>
+            <field name="formulary_status">on_formulary</field>
+            <field name="preferred_generic" eval="True"/>
+            <field name="indications">Bacterial infections: respiratory tract, urinary tract, skin and soft tissue</field>
+            <field name="contraindications">Hypersensitivity to penicillins</field>
+            <field name="side_effects">Diarrhea, nausea, skin rash, allergic reactions</field>
+            <field name="drug_interactions">Warfarin (increased bleeding risk)</field>
+            <field name="usual_adult_dose">250-500mg every 8 hours or 500-875mg every 12 hours</field>
+            <field name="usual_pediatric_dose">20-40mg/kg/day divided every 8 hours</field>
+            <field name="maximum_daily_dose">4000mg for adults</field>
+            <field name="renal_adjustment">Reduce frequency in kidney disease</field>
+            <field name="cost_per_unit">0.25</field>
+        </record>
+
+        <record id="medication_azithromycin_250mg" model="clinic.medication">
+            <field name="name">Azithromycin</field>
+            <field name="generic_name">Azithromycin</field>
+            <field name="brand_names">Zithromax, Z-Pak</field>
+            <field name="strength">250mg</field>
+            <field name="dosage_form">tablet</field>
+            <field name="drug_class">antibiotic</field>
+            <field name="category_id" ref="category_antibiotics"/>
+            <field name="route_of_administration">oral</field>
+            <field name="unit_of_measure">mg</field>
+            <field name="controlled_substance" eval="False"/>
+            <field name="pregnancy_category">B</field>
+            <field name="pediatric_use" eval="True"/>
+            <field name="formulary_status">on_formulary</field>
+            <field name="preferred_generic" eval="True"/>
+            <field name="indications">Respiratory tract infections, skin infections, sexually transmitted infections</field>
+            <field name="contraindications">Hypersensitivity to macrolides, history of cholestatic jaundice</field>
+            <field name="side_effects">Nausea, diarrhea, abdominal pain, QT prolongation</field>
+            <field name="drug_interactions">Warfarin, digoxin, ergot alkaloids</field>
+            <field name="usual_adult_dose">500mg on day 1, then 250mg daily for 4 days</field>
+            <field name="usual_pediatric_dose">10mg/kg on day 1, then 5mg/kg daily for 4 days</field>
+            <field name="maximum_daily_dose">500mg</field>
+            <field name="cost_per_unit">2.50</field>
+        </record>
+
+        <!-- Cardiovascular -->
+        <record id="medication_lisinopril_10mg" model="clinic.medication">
+            <field name="name">Lisinopril</field>
+            <field name="generic_name">Lisinopril</field>
+            <field name="brand_names">Prinivil, Zestril</field>
+            <field name="strength">10mg</field>
+            <field name="dosage_form">tablet</field>
+            <field name="drug_class">antihypertensive</field>
+            <field name="category_id" ref="category_cardiovascular"/>
+            <field name="route_of_administration">oral</field>
+            <field name="unit_of_measure">mg</field>
+            <field name="controlled_substance" eval="False"/>
+            <field name="pregnancy_category">D</field>
+            <field name="pediatric_use" eval="False"/>
+            <field name="formulary_status">on_formulary</field>
+            <field name="preferred_generic" eval="True"/>
+            <field name="indications">Hypertension, heart failure, post-myocardial infarction</field>
+            <field name="contraindications">Pregnancy, angioedema, bilateral renal artery stenosis</field>
+            <field name="side_effects">Dry cough, hyperkalemia, angioedema, hypotension</field>
+            <field name="drug_interactions">NSAIDs, potassium supplements, lithium</field>
+            <field name="usual_adult_dose">10mg once daily, may increase to 40mg daily</field>
+            <field name="maximum_daily_dose">40mg</field>
+            <field name="renal_adjustment">Reduce dose in kidney disease</field>
+            <field name="geriatric_considerations">Start with lower doses, monitor kidney function</field>
+            <field name="cost_per_unit">0.15</field>
+        </record>
+
+        <record id="medication_metoprolol_50mg" model="clinic.medication">
+            <field name="name">Metoprolol</field>
+            <field name="generic_name">Metoprolol Tartrate</field>
+            <field name="brand_names">Lopressor, Toprol-XL</field>
+            <field name="strength">50mg</field>
+            <field name="dosage_form">tablet</field>
+            <field name="drug_class">cardiovascular</field>
+            <field name="category_id" ref="category_cardiovascular"/>
+            <field name="route_of_administration">oral</field>
+            <field name="unit_of_measure">mg</field>
+            <field name="controlled_substance" eval="False"/>
+            <field name="pregnancy_category">C</field>
+            <field name="pediatric_use" eval="False"/>
+            <field name="formulary_status">on_formulary</field>
+            <field name="preferred_generic" eval="True"/>
+            <field name="indications">Hypertension, angina, heart failure, post-myocardial infarction</field>
+            <field name="contraindications">Severe bradycardia, heart block, cardiogenic shock, severe asthma</field>
+            <field name="side_effects">Fatigue, dizziness, bradycardia, depression</field>
+            <field name="drug_interactions">Calcium channel blockers, insulin, NSAIDs</field>
+            <field name="usual_adult_dose">25-50mg twice daily, may increase to 200mg twice daily</field>
+            <field name="maximum_daily_dose">400mg</field>
+            <field name="geriatric_considerations">Start with lower doses, monitor heart rate and blood pressure</field>
+            <field name="cost_per_unit">0.20</field>
+        </record>
+
+        <!-- Diabetes -->
+        <record id="medication_metformin_500mg" model="clinic.medication">
+            <field name="name">Metformin</field>
+            <field name="generic_name">Metformin Hydrochloride</field>
+            <field name="brand_names">Glucophage, Fortamet</field>
+            <field name="strength">500mg</field>
+            <field name="dosage_form">tablet</field>
+            <field name="drug_class">diabetes</field>
+            <field name="category_id" ref="category_diabetes"/>
+            <field name="route_of_administration">oral</field>
+            <field name="unit_of_measure">mg</field>
+            <field name="controlled_substance" eval="False"/>
+            <field name="pregnancy_category">B</field>
+            <field name="pediatric_use" eval="True"/>
+            <field name="formulary_status">on_formulary</field>
+            <field name="preferred_generic" eval="True"/>
+            <field name="indications">Type 2 diabetes mellitus</field>
+            <field name="contraindications">Severe kidney disease, metabolic acidosis, diabetic ketoacidosis</field>
+            <field name="side_effects">Nausea, diarrhea, metallic taste, lactic acidosis (rare)</field>
+            <field name="drug_interactions">Contrast dye, alcohol, cimetidine</field>
+            <field name="usual_adult_dose">500mg twice daily with meals, may increase to 1000mg twice daily</field>
+            <field name="maximum_daily_dose">2550mg</field>
+            <field name="renal_adjustment">Contraindicated if eGFR &lt; 30 mL/min/1.73m²</field>
+            <field name="geriatric_considerations">Monitor kidney function closely</field>
+            <field name="cost_per_unit">0.10</field>
+        </record>
+
+        <!-- Respiratory -->
+        <record id="medication_albuterol_inhaler" model="clinic.medication">
+            <field name="name">Albuterol</field>
+            <field name="generic_name">Albuterol Sulfate</field>
+            <field name="brand_names">ProAir, Ventolin, Proventil</field>
+            <field name="strength">90mcg/actuation</field>
+            <field name="dosage_form">inhaler</field>
+            <field name="drug_class">respiratory</field>
+            <field name="category_id" ref="category_respiratory"/>
+            <field name="route_of_administration">inhalation</field>
+            <field name="unit_of_measure">mcg</field>
+            <field name="controlled_substance" eval="False"/>
+            <field name="pregnancy_category">C</field>
+            <field name="pediatric_use" eval="True"/>
+            <field name="formulary_status">on_formulary</field>
+            <field name="preferred_generic" eval="True"/>
+            <field name="indications">Asthma, COPD, bronchospasm</field>
+            <field name="contraindications">Hypersensitivity to albuterol</field>
+            <field name="side_effects">Tremor, nervousness, headache, tachycardia</field>
+            <field name="drug_interactions">Beta-blockers, MAO inhibitors, tricyclic antidepressants</field>
+            <field name="usual_adult_dose">2 inhalations every 4-6 hours as needed</field>
+            <field name="usual_pediatric_dose">1-2 inhalations every 4-6 hours as needed</field>
+            <field name="maximum_daily_dose">12 inhalations per day</field>
+            <field name="cost_per_unit">25.00</field>
+        </record>
+
+        <!-- Controlled Substance Example -->
+        <record id="medication_hydrocodone_5mg" model="clinic.medication">
+            <field name="name">Hydrocodone/Acetaminophen</field>
+            <field name="generic_name">Hydrocodone Bitartrate and Acetaminophen</field>
+            <field name="brand_names">Vicodin, Lortab, Norco</field>
+            <field name="strength">5mg/325mg</field>
+            <field name="dosage_form">tablet</field>
+            <field name="drug_class">analgesic</field>
+            <field name="category_id" ref="category_analgesics"/>
+            <field name="route_of_administration">oral</field>
+            <field name="unit_of_measure">mg</field>
+            <field name="controlled_substance" eval="True"/>
+            <field name="controlled_schedule">II</field>
+            <field name="pregnancy_category">C</field>
+            <field name="pediatric_use" eval="False"/>
+            <field name="formulary_status">restricted</field>
+            <field name="preferred_generic" eval="True"/>
+            <field name="indications">Moderate to severe pain</field>
+            <field name="contraindications">Respiratory depression, acute asthma, paralytic ileus, hypersensitivity</field>
+            <field name="side_effects">Drowsiness, constipation, nausea, respiratory depression, addiction potential</field>
+            <field name="drug_interactions">CNS depressants, MAO inhibitors, alcohol</field>
+            <field name="usual_adult_dose">1-2 tablets every 4-6 hours as needed for pain</field>
+            <field name="maximum_daily_dose">8 tablets (limited by acetaminophen content)</field>
+            <field name="geriatric_considerations">Start with lower doses, increased risk of respiratory depression</field>
+            <field name="cost_per_unit">1.50</field>
+        </record>
+
+    </data>
+</odoo>
+

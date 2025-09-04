@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Prescription Report Action -->
+        <record id="action_report_prescription" model="ir.actions.report">
+            <field name="name">Prescription</field>
+            <field name="model">clinic.prescription</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">clinic_management.report_prescription_document</field>
+            <field name="report_file">clinic_management.report_prescription_document</field>
+            <field name="binding_model_id" ref="model_clinic_prescription"/>
+            <field name="binding_type">report</field>
+            <field name="paperformat_id" ref="base.paperformat_us"/>
+        </record>
+
+        <!-- Prescription Report Template -->
+        <template id="report_prescription_document">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="prescription">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <!-- Header with Clinic Information -->
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <div class="text-center">
+                                        <h2 style="color: #2E86AB; font-weight: bold;">
+                                            <span t-field="prescription.company_id.name"/>
+                                        </h2>
+                                        <div style="font-size: 14px; color: #666;">
+                                            <div><span t-field="prescription.company_id.street"/></div>
+                                            <div>
+                                                <span t-field="prescription.company_id.city"/>, 
+                                                <span t-field="prescription.company_id.state_id.name"/> 
+                                                <span t-field="prescription.company_id.zip"/>
+                                            </div>
+                                            <div>Phone: <span t-field="prescription.company_id.phone"/></div>
+                                        </div>
+                                    </div>
+                                    <hr style="border-top: 2px solid #2E86AB;"/>
+                                </div>
+                            </div>
+
+                            <!-- Prescription Header Information -->
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <strong>Prescription #:</strong> <span t-field="prescription.prescription_number"/><br/>
+                                    <strong>Date:</strong> <span t-field="prescription.prescription_date" t-options="{'widget': 'date'}"/><br/>
+                                    <strong>Prescriber:</strong> <span t-field="prescription.prescriber_id.name"/><br/>
+                                    <t t-if="prescription.prescriber_id.clinic_license_number">
+                                        <strong>License #:</strong> <span t-field="prescription.prescriber_id.clinic_license_number"/><br/>
+                                    </t>
+                                    <t t-if="prescription.prescriber_id.clinic_dea_number and prescription.controlled_substances">
+                                        <strong>DEA #:</strong> <span t-field="prescription.prescriber_id.clinic_dea_number"/><br/>
+                                    </t>
+                                </div>
+                                <div class="col-6">
+                                    <div style="border: 1px solid #ddd; padding: 10px; background-color: #f9f9f9;">
+                                        <strong>Patient Information</strong><br/>
+                                        <strong>Name:</strong> <span t-field="prescription.patient_id.name"/><br/>
+                                        <strong>Patient ID:</strong> <span t-field="prescription.patient_id.patient_id"/><br/>
+                                        <strong>DOB:</strong> <span t-field="prescription.patient_id.date_of_birth" t-options="{'widget': 'date'}"/><br/>
+                                        <strong>Age:</strong> <span t-field="prescription.patient_id.age"/> years<br/>
+                                        <t t-if="prescription.patient_id.phone">
+                                            <strong>Phone:</strong> <span t-field="prescription.patient_id.phone"/><br/>
+                                        </t>
+                                        <t t-if="prescription.patient_id.street">
+                                            <strong>Address:</strong> <span t-field="prescription.patient_id.street"/>
+                                            <t t-if="prescription.patient_id.city">
+                                                , <span t-field="prescription.patient_id.city"/>
+                                            </t>
+                                            <t t-if="prescription.patient_id.state_id">
+                                                , <span t-field="prescription.patient_id.state_id.name"/>
+                                            </t>
+                                            <t t-if="prescription.patient_id.zip">
+                                                <span t-field="prescription.patient_id.zip"/>
+                                            </t>
+                                        </t>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Vital Signs Section -->
+                            <t t-if="prescription.vital_signs_id">
+                                <div class="row mb-3">
+                                    <div class="col-12">
+                                        <div style="border: 1px solid #2E86AB; padding: 10px; background-color: #f0f8ff;">
+                                            <h5 style="color: #2E86AB; margin-bottom: 10px;">
+                                                <i class="fa fa-heartbeat"/> Vital Signs - <span t-field="prescription.vital_signs_id.visit_datetime" t-options="{'widget': 'datetime'}"/>
+                                            </h5>
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <strong>Blood Pressure:</strong><br/>
+                                                    <span t-field="prescription.vital_signs_id.blood_pressure_display"/>
+                                                    <t t-if="prescription.vital_signs_id.bp_category and prescription.vital_signs_id.bp_category != 'normal'">
+                                                        <br/><small style="color: #d9534f;">(<span t-field="prescription.vital_signs_id.bp_category"/>)</small>
+                                                    </t>
+                                                </div>
+                                                <div class="col-3">
+                                                    <strong>Heart Rate:</strong><br/>
+                                                    <span t-field="prescription.vital_signs_id.heart_rate"/> bpm
+                                                </div>
+                                                <div class="col-3">
+                                                    <strong>Temperature:</strong><br/>
+                                                    <span t-field="prescription.vital_signs_id.temperature"/>°C
+                                                    (<span t-field="prescription.vital_signs_id.temperature_fahrenheit"/>°F)
+                                                </div>
+                                                <div class="col-3">
+                                                    <strong>Weight:</strong><br/>
+                                                    <span t-field="prescription.vital_signs_id.weight"/> kg
+                                                    <t t-if="prescription.vital_signs_id.bmi">
+                                                        <br/><small>BMI: <span t-field="prescription.vital_signs_id.bmi"/></small>
+                                                    </t>
+                                                </div>
+                                            </div>
+                                            <t t-if="prescription.vital_signs_id.oxygen_saturation">
+                                                <div class="row mt-2">
+                                                    <div class="col-3">
+                                                        <strong>O₂ Saturation:</strong><br/>
+                                                        <span t-field="prescription.vital_signs_id.oxygen_saturation"/>%
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <strong>Respiratory Rate:</strong><br/>
+                                                        <span t-field="prescription.vital_signs_id.respiratory_rate"/> /min
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <t t-if="prescription.vital_signs_id.chief_complaint">
+                                                            <strong>Chief Complaint:</strong><br/>
+                                                            <span t-field="prescription.vital_signs_id.chief_complaint"/>
+                                                        </t>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+
+                            <!-- Clinical Information -->
+                            <t t-if="prescription.diagnosis_codes or prescription.clinical_indication">
+                                <div class="row mb-3">
+                                    <div class="col-12">
+                                        <div style="border: 1px solid #5cb85c; padding: 10px; background-color: #f0fff0;">
+                                            <h5 style="color: #5cb85c; margin-bottom: 10px;">
+                                                <i class="fa fa-stethoscope"/> Clinical Information
+                                            </h5>
+                                            <t t-if="prescription.diagnosis_codes">
+                                                <strong>Diagnosis:</strong> <span t-field="prescription.diagnosis_codes"/><br/>
+                                            </t>
+                                            <t t-if="prescription.clinical_indication">
+                                                <strong>Clinical Indication:</strong> <span t-field="prescription.clinical_indication"/>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+
+                            <!-- Medications Table -->
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <h4 style="color: #2E86AB; border-bottom: 2px solid #2E86AB; padding-bottom: 5px;">
+                                        <i class="fa fa-prescription"/> Prescribed Medications
+                                    </h4>
+                                    <table class="table table-bordered" style="margin-top: 15px;">
+                                        <thead style="background-color: #2E86AB; color: white;">
+                                            <tr>
+                                                <th style="width: 25%;">Medication</th>
+                                                <th style="width: 15%;">Strength</th>
+                                                <th style="width: 20%;">Directions</th>
+                                                <th style="width: 10%;">Quantity</th>
+                                                <th style="width: 10%;">Refills</th>
+                                                <th style="width: 20%;">Instructions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="prescription.prescription_line_ids" t-as="line">
+                                                <tr>
+                                                    <td>
+                                                        <strong><span t-field="line.medication_id.name"/></strong>
+                                                        <t t-if="line.medication_id.generic_name != line.medication_id.name">
+                                                            <br/><small>(<span t-field="line.medication_id.generic_name"/>)</small>
+                                                        </t>
+                                                        <t t-if="line.is_controlled_substance">
+                                                            <br/><span class="badge badge-warning" style="font-size: 10px;">Schedule <span t-field="line.controlled_schedule"/></span>
+                                                        </t>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="line.strength_prescribed"/>
+                                                        <br/><small><span t-field="line.dosage_form_prescribed"/></small>
+                                                    </td>
+                                                    <td>
+                                                        <strong><span t-field="line.dose_amount"/></strong>
+                                                        <t t-if="line.frequency != 'custom'">
+                                                            <br/><span t-field="line.frequency"/>
+                                                        </t>
+                                                        <t t-if="line.frequency == 'custom'">
+                                                            <br/><span t-field="line.frequency_text"/>
+                                                        </t>
+                                                        <t t-if="line.duration">
+                                                            <br/><small>for <span t-field="line.duration"/></small>
+                                                        </t>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="line.quantity_prescribed"/>
+                                                        <t t-if="line.quantity_unit">
+                                                            <br/><small><span t-field="line.quantity_unit"/></small>
+                                                        </t>
+                                                        <t t-if="line.days_supply">
+                                                            <br/><small><span t-field="line.days_supply"/> days</small>
+                                                        </t>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <span t-field="line.refills_authorized"/>
+                                                    </td>
+                                                    <td>
+                                                        <t t-if="line.special_instructions">
+                                                            <span t-field="line.special_instructions"/>
+                                                        </t>
+                                                        <t t-if="not line.generic_substitution_allowed">
+                                                            <br/><strong style="color: #d9534f;">Brand Name Only</strong>
+                                                        </t>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Special Instructions and Allergies -->
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <t t-if="prescription.allergies_noted">
+                                        <div class="alert alert-warning" style="border-left: 4px solid #f0ad4e;">
+                                            <strong><i class="fa fa-exclamation-triangle"/> Patient Allergies:</strong>
+                                            <span t-field="prescription.allergies_noted"/>
+                                        </div>
+                                    </t>
+                                    
+                                    <t t-if="prescription.special_instructions">
+                                        <div style="border: 1px solid #ddd; padding: 10px; background-color: #f9f9f9;">
+                                            <strong>Special Instructions:</strong><br/>
+                                            <span t-field="prescription.special_instructions"/>
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+
+                            <!-- Footer with Signature and Legal Information -->
+                            <div class="row mt-4">
+                                <div class="col-6">
+                                    <div style="border-top: 1px solid #000; width: 300px; margin-top: 40px;">
+                                        <strong>Prescriber Signature</strong><br/>
+                                        <span t-field="prescription.prescriber_id.name"/><br/>
+                                        <t t-if="prescription.prescriber_id.clinic_license_number">
+                                            License: <span t-field="prescription.prescriber_id.clinic_license_number"/>
+                                        </t>
+                                    </div>
+                                </div>
+                                <div class="col-6 text-right">
+                                    <t t-if="prescription.follow_up_date">
+                                        <strong>Follow-up Date:</strong> <span t-field="prescription.follow_up_date" t-options="{'widget': 'date'}"/><br/>
+                                    </t>
+                                    <small style="color: #666;">
+                                        Generated on <span t-esc="datetime.datetime.now().strftime('%Y-%m-%d %H:%M')"/>
+                                    </small>
+                                </div>
+                            </div>
+
+                            <!-- Legal Footer -->
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <hr/>
+                                    <small style="color: #666; font-size: 10px;">
+                                        This prescription was generated electronically. Generic substitution is permitted unless otherwise indicated.
+                                        For questions about this prescription, please contact the prescribing physician.
+                                        <t t-if="prescription.controlled_substances">
+                                            This prescription contains controlled substances and is subject to federal regulations.
+                                        </t>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <!-- Prescription Summary Report (for multiple prescriptions) -->
+        <record id="action_report_prescription_summary" model="ir.actions.report">
+            <field name="name">Prescription Summary</field>
+            <field name="model">clinic.prescription</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">clinic_management.report_prescription_summary</field>
+            <field name="report_file">clinic_management.report_prescription_summary</field>
+            <field name="binding_model_id" ref="model_clinic_prescription"/>
+            <field name="binding_type">report</field>
+            <field name="paperformat_id" ref="base.paperformat_us"/>
+        </record>
+
+        <template id="report_prescription_summary">
+            <t t-call="web.html_container">
+                <div class="page">
+                    <div class="text-center mb-4">
+                        <h2>Prescription Summary Report</h2>
+                        <p>Generated on <span t-esc="datetime.datetime.now().strftime('%Y-%m-%d %H:%M')"/></p>
+                    </div>
+                    
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Prescription #</th>
+                                <th>Date</th>
+                                <th>Patient</th>
+                                <th>Prescriber</th>
+                                <th>Medications</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="docs" t-as="prescription">
+                                <tr>
+                                    <td><span t-field="prescription.prescription_number"/></td>
+                                    <td><span t-field="prescription.prescription_date" t-options="{'widget': 'date'}"/></td>
+                                    <td><span t-field="prescription.patient_id.name"/></td>
+                                    <td><span t-field="prescription.prescriber_id.name"/></td>
+                                    <td><span t-field="prescription.total_medications"/></td>
+                                    <td><span t-field="prescription.state"/></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </template>
+
+    </data>
+</odoo>
+

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Main Menu -->
+        <menuitem id="menu_clinic_management_root" 
+                  name="Clinic Management" 
+                  sequence="10" 
+                  web_icon="clinic_management,static/description/icon.png"/>
+       
+        <!-- Patient Care Menu -->
+        <menuitem id="menu_clinic_patient_care" 
+                  name="Patient Care" 
+                  parent="menu_clinic_management_root" 
+                  sequence="10"/>
+
+        <menuitem id="menu_clinic_patient" 
+                  name="Patients" 
+                  parent="menu_clinic_patient_care" 
+                  action="action_clinic_patient" 
+                  sequence="10"/>
+
+        <menuitem id="menu_clinic_vital_signs" 
+                  name="Vital Signs" 
+                  parent="menu_clinic_patient_care" 
+                  action="action_clinic_vital_signs" 
+                  sequence="20"/>
+
+        <menuitem id="menu_clinic_prescription" 
+                  name="Prescriptions" 
+                  parent="menu_clinic_patient_care" 
+                  action="action_clinic_prescription" 
+                  sequence="30"/>
+
+        <menuitem id="menu_clinic_lab_result" 
+                  name="Lab Results" 
+                  parent="menu_clinic_patient_care"
+                  action="action_clinic_lab_result" 
+                  sequence="40"/>
+
+        <!-- Medication Management Menu -->
+        <menuitem id="menu_clinic_medication_management" 
+                  name="Medication Management" 
+                  parent="menu_clinic_management_root" 
+                  sequence="20"/>
+
+        <menuitem id="menu_clinic_medication" 
+                  name="Medications" 
+                  parent="menu_clinic_medication_management" 
+                  action="action_clinic_medication" 
+                  sequence="10"/>
+
+        <menuitem id="menu_clinic_medication_category" 
+                  name="Medication Categories" 
+                  parent="menu_clinic_medication_management" 
+                  action="action_clinic_medication_category" 
+                  sequence="20"/>
+
+        <!-- Reports Menu -->
+        <menuitem id="menu_clinic_reports" 
+                  name="Reports" 
+                  parent="menu_clinic_management_root" 
+                  sequence="30"/>
+
+        <!-- Configuration Menu -->
+        <menuitem id="menu_clinic_configuration" 
+                  name="Configuration" 
+                  parent="menu_clinic_management_root" 
+                  sequence="40" 
+                  groups="clinic_management.group_clinic_practice_manager"/>
+
+        <!-- Quick Actions -->
+        <record id="action_clinic_patient_quick" model="ir.actions.act_window">
+            <field name="name">New Patient</field>
+            <field name="res_model">clinic.patient</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <record id="action_clinic_vital_signs_quick" model="ir.actions.act_window">
+            <field name="name">Record Vital Signs</field>
+            <field name="res_model">clinic.vital.signs</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <record id="action_clinic_prescription_quick" model="ir.actions.act_window">
+            <field name="name">New Prescription</field>
+            <field name="res_model">clinic.prescription</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</odoo>
+

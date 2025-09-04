@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Security Categories -->
+        <record id="module_category_clinic" model="ir.module.category">
+            <field name="name">Clinic Management</field>
+            <field name="description">Manage clinic operations and patient care</field>
+            <field name="sequence">20</field>
+        </record>
+
+        <!-- User Groups -->
+        <record id="group_clinic_receptionist" model="res.groups">
+            <field name="name">Clinic: Receptionist</field>
+            <field name="category_id" ref="module_category_clinic"/>
+            <field name="comment">Basic access for patient registration and appointment scheduling</field>
+        </record>
+
+        <record id="group_clinic_medical_assistant" model="res.groups">
+            <field name="name">Clinic: Medical Assistant</field>
+            <field name="category_id" ref="module_category_clinic"/>
+            <field name="implied_ids" eval="[(4, ref('group_clinic_receptionist'))]"/>
+            <field name="comment">Access for vital signs recording and patient preparation</field>
+        </record>
+
+        <record id="group_clinic_nurse" model="res.groups">
+            <field name="name">Clinic: Nurse</field>
+            <field name="category_id" ref="module_category_clinic"/>
+            <field name="implied_ids" eval="[(4, ref('group_clinic_medical_assistant'))]"/>
+            <field name="comment">Full access to patient care and vital signs management</field>
+        </record>
+
+        <record id="group_clinic_physician" model="res.groups">
+            <field name="name">Clinic: Physician</field>
+            <field name="category_id" ref="module_category_clinic"/>
+            <field name="implied_ids" eval="[(4, ref('group_clinic_nurse'))]"/>
+            <field name="comment">Full access including prescription authority</field>
+        </record>
+
+        <record id="group_clinic_practice_manager" model="res.groups">
+            <field name="name">Clinic: Practice Manager</field>
+            <field name="category_id" ref="module_category_clinic"/>
+            <field name="implied_ids" eval="[(4, ref('group_clinic_physician'))]"/>
+            <field name="comment">Administrative access and system management</field>
+        </record>
+
+        <!-- Record Rules for Patient Access -->
+        <record id="patient_access_receptionist" model="ir.rule">
+            <field name="name">Receptionist Patient Access</field>
+            <field name="model_id" ref="model_clinic_patient"/>
+            <field name="groups" eval="[(4, ref('group_clinic_receptionist'))]"/>
+            <field name="domain_force">[('active', '=', True), ('company_id', 'in', company_ids)]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <record id="patient_access_clinical_staff" model="ir.rule">
+            <field name="name">Clinical Staff Patient Access</field>
+            <field name="model_id" ref="model_clinic_patient"/>
+            <field name="groups" eval="[(4, ref('group_clinic_medical_assistant')), (4, ref('group_clinic_nurse')), (4, ref('group_clinic_physician'))]"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- Record Rules for Vital Signs Access -->
+        <record id="vital_signs_access_medical_assistant" model="ir.rule">
+            <field name="name">Medical Assistant Vital Signs Access</field>
+            <field name="model_id" ref="model_clinic_vital_signs"/>
+            <field name="groups" eval="[(4, ref('group_clinic_medical_assistant'))]"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <record id="vital_signs_access_clinical_staff" model="ir.rule">
+            <field name="name">Clinical Staff Vital Signs Access</field>
+            <field name="model_id" ref="model_clinic_vital_signs"/>
+            <field name="groups" eval="[(4, ref('group_clinic_nurse')), (4, ref('group_clinic_physician'))]"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <!-- Record Rules for Medication Access -->
+        <record id="medication_access_all_clinical" model="ir.rule">
+            <field name="name">Clinical Staff Medication Access</field>
+            <field name="model_id" ref="model_clinic_medication"/>
+            <field name="groups" eval="[(4, ref('group_clinic_medical_assistant')), (4, ref('group_clinic_nurse')), (4, ref('group_clinic_physician'))]"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <record id="medication_management_physician" model="ir.rule">
+            <field name="name">Physician Medication Management</field>
+            <field name="model_id" ref="model_clinic_medication"/>
+            <field name="groups" eval="[(4, ref('group_clinic_physician')), (4, ref('group_clinic_practice_manager'))]"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <!-- Record Rules for Prescription Access -->
+        <record id="prescription_access_nurse" model="ir.rule">
+            <field name="name">Nurse Prescription Read Access</field>
+            <field name="model_id" ref="model_clinic_prescription"/>
+            <field name="groups" eval="[(4, ref('group_clinic_nurse'))]"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <record id="prescription_access_physician" model="ir.rule">
+            <field name="name">Physician Prescription Full Access</field>
+            <field name="model_id" ref="model_clinic_prescription"/>
+            <field name="groups" eval="[(4, ref('group_clinic_physician'))]"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <!-- Record Rules for Prescription Lines -->
+        <record id="prescription_line_access_nurse" model="ir.rule">
+            <field name="name">Nurse Prescription Line Read Access</field>
+            <field name="model_id" ref="model_clinic_prescription_line"/>
+            <field name="groups" eval="[(4, ref('group_clinic_nurse'))]"/>
+            <field name="domain_force">[('prescription_id.company_id', 'in', company_ids)]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <record id="prescription_line_access_physician" model="ir.rule">
+            <field name="name">Physician Prescription Line Full Access</field>
+            <field name="model_id" ref="model_clinic_prescription_line"/>
+            <field name="groups" eval="[(4, ref('group_clinic_physician'))]"/>
+            <field name="domain_force">[('prescription_id.company_id', 'in', company_ids)]</field>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <!-- Multi-company Rules -->
+        <record id="patient_company_rule" model="ir.rule">
+            <field name="name">Patient Multi-Company Rule</field>
+            <field name="model_id" ref="model_clinic_patient"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="vital_signs_company_rule" model="ir.rule">
+            <field name="name">Vital Signs Multi-Company Rule</field>
+            <field name="model_id" ref="model_clinic_vital_signs"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="medication_company_rule" model="ir.rule">
+            <field name="name">Medication Multi-Company Rule</field>
+            <field name="model_id" ref="model_clinic_medication"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="prescription_company_rule" model="ir.rule">
+            <field name="name">Prescription Multi-Company Rule</field>
+            <field name="model_id" ref="model_clinic_prescription"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        </record>
+
+    </data>
+</odoo>
+

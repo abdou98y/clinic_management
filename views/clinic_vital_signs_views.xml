@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Vital Signs list View -->
+        <record id="view_clinic_vital_signs_list" model="ir.ui.view">
+            <field name="name">clinic.vital.signs.list</field>
+            <field name="model">clinic.vital.signs</field>
+            <field name="arch" type="xml">
+                <list string="Vital Signs" sample="1" decoration-danger="bp_category in ['stage2', 'crisis']" 
+                      decoration-warning="bp_category == 'stage1'" decoration-info="bp_category == 'elevated'">
+                    <field name="visit_datetime"/>
+                    <field name="patient_id"/>
+                    <field name="visit_type"/>
+                    <field name="blood_pressure_display"/>
+                    <field name="bp_category" invisible="1"/>
+                    <field name="heart_rate"/>
+                    <field name="temperature"/>
+                    <field name="respiratory_rate"/>
+                    <field name="oxygen_saturation"/>
+                    <field name="weight"/>
+                    <field name="bmi"/>
+                    <field name="bmi_category"/>
+                    <field name="recorded_by"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Vital Signs Form View -->
+        <record id="view_clinic_vital_signs_form" model="ir.ui.view">
+            <field name="name">clinic.vital.signs.form</field>
+            <field name="model">clinic.vital.signs</field>
+            <field name="arch" type="xml">
+                <form string="Vital Signs">
+                    <header>
+                        <button name="action_create_prescription" type="object" 
+                                string="Create Prescription" class="btn-primary"
+                                groups="clinic_management.group_clinic_physician"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="patient_id" options="{'no_create': True, 'no_create_edit': True}"/>
+                            </h1>
+                            <h2>
+                                <field name="visit_datetime"/>
+                            </h2>
+                        </div>
+
+                        <group>
+                            <group name="visit_info" string="Visit Information">
+                                <field name="visit_type"/>
+                                <field name="recorded_by" options="{'no_create': True}"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page name="vital_signs" string="Vital Signs">
+                                <group>
+                                    <group name="cardiovascular" string="Cardiovascular">
+                                        <field name="systolic_bp"/>
+                                        <field name="diastolic_bp"/>
+                                        <field name="blood_pressure_display" readonly="1"/>
+                                        <field name="bp_category" readonly="1" 
+                                               invisible= "bp_category ==  False"/>
+                                        <field name="heart_rate"/>
+                                        <field name="heart_rhythm"/>
+                                    </group>
+                                    <group name="respiratory" string="Respiratory">
+                                        <field name="respiratory_rate"/>
+                                        <field name="oxygen_saturation"/>
+                                        <field name="oxygen_support"/>
+                                        <field name="oxygen_flow_rate" 
+                                               invisible="oxygen_support == False" required="oxygen_support == True"/>
+                                    </group>
+                                </group>
+                                
+                                <group>
+                                    <group name="temperature" string="Temperature">
+                                        <field name="temperature"/>
+                                        <field name="temperature_method"/>
+                                        <field name="temperature_fahrenheit" readonly="1"/>
+                                    </group>
+                                    <group name="anthropometric" string="Measurements">
+                                        <field name="weight"/>
+                                        <field name="height"/>
+                                        <field name="bmi" readonly="1"/>
+                                        <field name="bmi_category" readonly="1" 
+                                               invisible="bmi_category == False"/>
+                                        <field name="head_circumference" />
+                                        <field name="waist_circumference"/>
+                                    </group>
+                                </group>
+                            </page>
+                            
+                            <page name="clinical_assessment" string="Clinical Assessment">
+                                <group>
+                                    <group name="assessment" string="Assessment">
+                                        <field name="pain_scale"/>
+                                        <field name="consciousness_level"/>
+                                        <field name="mobility_status"/>
+                                        <field name="skin_condition"/>
+                                    </group>
+                                </group>
+                                
+                                <group name="clinical_notes" string="Clinical Notes">
+                                    <field name="chief_complaint" placeholder="Primary reason for visit..."/>
+                                    <field name="history_present_illness" placeholder="Current illness history and symptoms..."/>
+                                    <field name="physical_examination" placeholder="Physical examination findings..."/>
+                                    <field name="diagnosis" placeholder="Clinical diagnosis or impression..."/>
+                                    <field name="assessment_plan" placeholder="Clinical assessment and treatment plan..."/>
+                                    <field name="doctor_remarks" placeholder="Additional physician notes and observations..."/>
+                                    <field name="follow_up_instructions" placeholder="Patient follow-up and care instructions..."/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+                    <!-- <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div> -->
+                </form>
+            </field>
+        </record>
+
+        <!-- Vital Signs Search View
+        <record id="view_clinic_vital_signs_search" model="ir.ui.view">
+            <field name="name">clinic.vital.signs.search</field>
+            <field name="model">clinic.vital.signs</field>
+            <field name="arch" type="xml">
+                <search string="Search Vital Signs">
+                    <field name="patient_id" string="Patient"/>
+                    <field name="recorded_by" string="Recorded By"/>
+                    <field name="diagnosis" string="Diagnosis"/>
+                    <field name="chief_complaint" string="Chief Complaint"/>
+                    
+                    <filter name="today" string="Today" 
+                            domain="[('visit_datetime', '>=', datetime.datetime.combine(context_today(), datetime.time(0,0,0))), ('visit_datetime', '&lt;=', datetime.datetime.combine(context_today(), datetime.time(23,59,59)))]"/>
+                    <filter name="this_week" string="This Week" 
+                            domain="[('visit_datetime', '>=', (context_today() - datetime.timedelta(days=context_today().weekday())).strftime('%Y-%m-%d')), ('visit_datetime', '&lt;=', (context_today() + datetime.timedelta(days=6-context_today().weekday())).strftime('%Y-%m-%d'))]"/>
+                    <filter name="this_month" string="This Month" 
+                            domain="[('visit_datetime', '>=', context_today().replace(day=1).strftime('%Y-%m-%d')), ('visit_datetime', '&lt;=', (context_today().replace(day=1) + datetime.timedelta(days=32)).replace(day=1) - datetime.timedelta(days=1)).strftime('%Y-%m-%d'))]"/>
+                    
+                    <separator/>
+                    <filter name="emergency_visits" string="Emergency Visits" 
+                            domain="[('visit_type', '=', 'emergency')]"/>
+                    <filter name="regular_visits" string="Regular Visits" 
+                            domain="[('visit_type', '=', 'regular')]"/>
+                    <filter name="followup_visits" string="Follow-up Visits" 
+                            domain="[('visit_type', '=', 'followup')]"/>
+                    
+                    <separator/>
+                    <filter name="abnormal_bp" string="Abnormal Blood Pressure" 
+                            domain="[('bp_category', 'in', ['stage1', 'stage2', 'crisis'])]"/>
+                    <filter name="fever" string="Fever" 
+                            domain="[('temperature', '>', 37.5)]"/>
+                    <filter name="low_oxygen" string="Low Oxygen Saturation" 
+                            domain="[('oxygen_saturation', '&lt;', 95.0)]"/>
+                    <filter name="abnormal_bmi" string="Abnormal BMI" 
+                            domain="[('bmi_category', 'in', ['underweight', 'obese_class1', 'obese_class2', 'obese_class3'])]"/>
+                    
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_patient" string="Patient" 
+                                context="{'group_by': 'patient_id'}"/>
+                        <filter name="group_by_visit_type" string="Visit Type" 
+                                context="{'group_by': 'visit_type'}"/>
+                        <filter name="group_by_recorded_by" string="Recorded By" 
+                                context="{'group_by': 'recorded_by'}"/>
+                        <filter name="group_by_date" string="Date" 
+                                context="{'group_by': 'visit_datetime:day'}"/>
+                    </group>
+                </search>
+            </field>
+        </record> -->
+
+
+        <!-- Vital Signs Search View -->
+        <record id="view_clinic_vital_signs_search" model="ir.ui.view">
+            <field name="name">clinic.vital.signs.search</field>
+            <field name="model">clinic.vital.signs</field>
+            <field name="arch" type="xml">
+                <search string="Search Vital Signs">
+                    <!-- Direct searchable fields -->
+                    <field name="patient_id" string="Patient"/>
+                    <field name="recorded_by" string="Recorded By"/>
+                    <field name="diagnosis" string="Diagnosis"/>
+                    <field name="chief_complaint" string="Chief Complaint"/>
+
+                    <!-- Date filters -->
+                    <!-- <filter name="today" string="Today"
+                            domain="[('visit_datetime','&gt;=', context_today()), ('visit_datetime','&lt;', (context_today() + relativedelta(days=1)))]"/>
+                    <filter name="this_week" string="This Week"
+                            domain="[('visit_datetime','&gt;=', (context_today() - relativedelta(days=context_today().weekday()))), ('visit_datetime','&lt;', (context_today() + relativedelta(days=7 - context_today().weekday())))]"/>
+                    <filter name="this_month" string="This Month"
+                            domain="[('visit_datetime','&gt;=', context_today().replace(day=1)), ('visit_datetime','&lt;', (context_today().replace(day=1) + relativedelta(months=1)))]"/> -->
+
+                    <separator/>
+
+                    <!-- Visit type filters -->
+                    <filter name="emergency_visits" string="Emergency Visits"
+                            domain="[('visit_type', '=', 'emergency')]"/>
+                    <filter name="regular_visits" string="Regular Visits"
+                            domain="[('visit_type', '=', 'regular')]"/>
+                    <filter name="followup_visits" string="Follow-up Visits"
+                            domain="[('visit_type', '=', 'followup')]"/>
+
+                    <separator/>
+
+                    <!-- Vital sign filters -->
+                    <filter name="abnormal_bp" string="Abnormal Blood Pressure"
+                            domain="[('bp_category', 'in', ['stage1', 'stage2', 'crisis'])]"/>
+                    <filter name="fever" string="Fever"
+                            domain="[('temperature', '&gt;', 37.5)]"/>
+                    <filter name="low_oxygen" string="Low Oxygen Saturation"
+                            domain="[('oxygen_saturation', '&lt;', 95.0)]"/>
+                    <filter name="abnormal_bmi" string="Abnormal BMI"
+                            domain="[('bmi_category', 'in', ['underweight', 'obese_class1', 'obese_class2', 'obese_class3'])]"/>
+
+                    <!-- Group By -->
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_patient" string="Patient"
+                                context="{'group_by': 'patient_id'}"/>
+                        <filter name="group_by_visit_type" string="Visit Type"
+                                context="{'group_by': 'visit_type'}"/>
+                        <filter name="group_by_recorded_by" string="Recorded By"
+                                context="{'group_by': 'recorded_by'}"/>
+                        <filter name="group_by_date" string="Date"
+                                context="{'group_by': 'visit_datetime:day'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+
+        <!-- Vital Signs Calendar View
+        <record id="view_clinic_vital_signs_calendar" model="ir.ui.view">
+            <field name="name">clinic.vital.signs.calendar</field>
+            <field name="model">clinic.vital.signs</field>
+            <field name="arch" type="xml">
+                <calendar string="Vital Signs" date_start="visit_datetime" 
+                          color="visit_type" quick_add="False">
+                    <field name="patient_id"/>
+                    <field name="visit_type"/>
+                    <field name="blood_pressure_display"/>
+                    <field name="temperature"/>
+                    <field name="recorded_by"/>
+                </calendar>
+            </field>
+        </record> -->
+
+
+
+        <!-- Vital Signs Pivot View -->
+        <record id="view_clinic_vital_signs_pivot" model="ir.ui.view">
+            <field name="name">clinic.vital.signs.pivot</field>
+            <field name="model">clinic.vital.signs</field>
+            <field name="arch" type="xml">
+                <pivot string="Vital Signs Analysis">
+                    <field name="visit_datetime" type="row" interval="month"/>
+                    <field name="visit_type" type="col"/>
+                    <field name="systolic_bp" type="measure"/>
+                    <field name="diastolic_bp" type="measure"/>
+                    <field name="heart_rate" type="measure"/>
+                    <field name="temperature" type="measure"/>
+                    <field name="weight" type="measure"/>
+                    <field name="bmi" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <!-- Vital Signs Graph View -->
+        <record id="view_clinic_vital_signs_graph" model="ir.ui.view">
+            <field name="name">clinic.vital.signs.graph</field>
+            <field name="model">clinic.vital.signs</field>
+            <field name="arch" type="xml">
+                <graph string="Vital Signs Trends" type="line">
+                    <field name="visit_datetime" type="row" interval="day"/>
+                    <field name="systolic_bp" type="measure"/>
+                    <field name="diastolic_bp" type="measure"/>
+                    <field name="heart_rate" type="measure"/>
+                    <field name="temperature" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <!-- Vital Signs Action -->
+        <record id="action_clinic_vital_signs" model="ir.actions.act_window">
+            <field name="name">Vital Signs</field>
+            <field name="res_model">clinic.vital.signs</field>
+            <field name="view_mode">list,form,pivot,graph</field>
+            <field name="search_view_id" ref="view_clinic_vital_signs_search"/>
+            <field name="context">{'search_default_this_week': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Record your first vital signs
+                </p>
+                <p>
+                    Start recording patient vital signs including blood pressure,
+                    heart rate, temperature, respiratory rate, and body measurements.
+                    The system will automatically calculate BMI and flag abnormal values.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>
+
