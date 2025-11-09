@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <templates id="template" xml:space="preserve">
+        <template id="clinic_patient_autosave_assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="module" src="/clinic_management/static/src/js/patient_autosave.js"/>
+            </xpath>
+        </template>
+    </templates>
+</odoo>

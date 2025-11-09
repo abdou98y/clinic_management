@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="template_medical_prescription">
+        <t t-call="web.external_layout">
+            <t t-slot="content">
+                <main>
+                    <!-- Static test content (always renders) -->
+                    <div class="page" style="font-family: 'Tajawal', sans-serif; direction: rtl;">
+                        <h2 style="text-align:center;">تجربة طباعة الروشتة</h2>
+                        <p style="text-align:center;">هذا نص تجريبي ثابت يظهر دائمًا في الملف</p>
+                    </div>
+
+                    <!-- Dynamic prescription content (only renders if docs exist) -->
+                    <t t-if="docs">
+                        <t t-foreach="docs" t-as="doc">
+                            <div class="page" style="font-family: 'Tajawal', sans-serif; direction: rtl;">
+
+                                <!-- Header -->
+                                <div style="width:100%; display:flex; justify-content:space-between;">
+
+                                    <!-- Left box -->
+                                    <div style="border:2px solid #000; padding:10px; width:35%; font-size:14px;">
+                                        <div>Date: <span t-esc="doc.date or ''"/></div>
+                                        <div>Name: <span t-esc="doc.patient_id.name or '........'"/></div>
+                                        <div>Age: ........................ Code No: ....................</div>
+                                        <div>Re-Ex: .................................</div>
+                                    </div>
+
+                                    <!-- Doctor Info -->
+                                    <div style="width:60%; text-align:center; line-height:1.4;">
+                                        <div style="font-size:22px; font-weight:bold;">دكتـــــــــور</div>
+                                        <div style="font-size:26px; font-weight:bold;">طارق السيد عبدالله</div>
+                                        <div style="font-size:15px;">
+                                            ماجستير الباطنة جامعة القاهرة ( قصر العيني )
+                                            <br/>البورد العربي – الباطنة العامة
+                                            <br/>المعهد القومي للسكر والغدد الصماء بالقاهرة
+                                            <br/>استشاري الباطنة والسكر والغدد الصماء ( كبار )
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <!-- Center line + R L sign -->
+                                <div style="margin-top:15px; border-bottom:2px solid #000; width:100%;"></div>
+                                <div style="margin-top:-10px; margin-right:10px; font-size:48px; font-family:Times New Roman;">
+                                    Rℓ
+                                </div>
+
+                                <!-- Prescription Body -->
+                                <div style="margin-top:20px; min-height:350px; font-size:18px;">
+
+                                    <!-- Medicine lines -->
+                                    <t t-foreach="doc.treatment_line_ids or []" t-as="line">
+                                        <div style="margin-bottom:25px;">
+                                            <div style="font-weight:bold; font-size:20px;" t-esc="line.medicine_name or 'اسم الدواء'"/>
+                                            <div style="font-size:16px; margin-right:15px;" t-esc="line.usage_instructions or 'طريقة الاستعمال'"/>
+                                        </div>
+                                    </t>
+
+                                </div>
+
+                                <!-- Footer -->
+                                <div style="text-align:right; font-size:16px; margin-top:30px;">
+                                    نعتذر عن استقبال حالات الطوارئ
+                                    – الكشف والاستشارة بحجز مسبق
+                                </div>
+
+                                <!-- Clinic Info -->
+                                <div style="margin-top:25px; font-size:15px; text-align:right;">
+                                    <div>
+                                        <span style="font-size:20px;">📍</span>
+                                        عيادة: مركز بدر أمام بدر سكان
+                                    </div>
+
+                                    <div>
+                                        <span style="font-size:20px;">📞</span>
+                                        01012000168
+                                    </div>
+
+                                    <div>
+                                        <span style="font-size:20px;">📞</span>
+                                        01021208060
+                                    </div>
+
+                                    <div>
+                                        <span style="font-size:20px;">📝</span>
+                                        عيادة: مدينة السادات، خلف مستشفى السادات التخصصي
+                                        بجوار نادي المهندسين
+                                    </div>
+                                </div>
+
+                            </div>
+                        </t>
+                    </t>
+
+                </main>
+            </t>
+        </t>
+    </template>
+</odoo>
+
+
+
+
+
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<odoo>-->
+<!--    <template id="template_medical_prescription">-->
+<!--        <t t-call="web.external_layout">-->
+<!--            <t t-slot="content">-->
+<!--                <main>-->
+<!--                    <t t-foreach="docs" t-as="doc">-->
+<!--                        <div class="page" style="font-family: 'Tajawal', sans-serif; direction: rtl;">-->
+
+<!--                            &lt;!&ndash; Header &ndash;&gt;-->
+<!--                            <div style="width:100%; display:flex; justify-content:space-between;">-->
+
+<!--                                &lt;!&ndash; Left box &ndash;&gt;-->
+<!--                                <div style="border:2px solid #000; padding:10px; width:35%; font-size:14px;">-->
+<!--                                    <div>Date: <span t-esc="doc.date or ''"/></div>-->
+<!--                                    <div>Name: <span t-esc="doc.patient_id.name or '........'"/></div>-->
+<!--                                    <div>Age: ........................ Code No: ....................</div>-->
+<!--                                    <div>Re-Ex: .................................</div>-->
+<!--                                </div>-->
+
+<!--                                &lt;!&ndash; Doctor Info &ndash;&gt;-->
+<!--                                <div style="width:60%; text-align:center; line-height:1.4;">-->
+<!--                                    <div style="font-size:22px; font-weight:bold;">دكتـــــــــور</div>-->
+<!--                                    <div style="font-size:26px; font-weight:bold;">طارق السيد عبدالله</div>-->
+<!--                                    <div style="font-size:15px;">-->
+<!--                                        ماجستير الباطنة جامعة القاهرة ( قصر العيني )-->
+<!--                                        <br/>البورد العربي – الباطنة العامة-->
+<!--                                        <br/>المعهد القومي للسكر والغدد الصماء بالقاهرة-->
+<!--                                        <br/>استشاري الباطنة والسكر والغدد الصماء ( كبار )-->
+<!--                                    </div>-->
+<!--                                </div>-->
+
+<!--                            </div>-->
+
+<!--                            &lt;!&ndash; Center line + R L sign &ndash;&gt;-->
+<!--                            <div style="margin-top:15px; border-bottom:2px solid #000; width:100%;"></div>-->
+<!--                            <div style="margin-top:-10px; margin-right:10px; font-size:48px; font-family:Times New Roman;">-->
+<!--                                Rℓ-->
+<!--                            </div>-->
+
+<!--                            &lt;!&ndash; Prescription Body &ndash;&gt;-->
+<!--                            <div style="margin-top:20px; min-height:350px; font-size:18px;">-->
+
+<!--                                &lt;!&ndash; Medicine lines &ndash;&gt;-->
+<!--                                <t t-foreach="doc.treatment_line_ids or []" t-as="line">-->
+<!--                                    <div style="margin-bottom:25px;">-->
+<!--                                        <div style="font-weight:bold; font-size:20px;" t-esc="line.medicine_name or ''"/>-->
+<!--                                        <div style="font-size:16px; margin-right:15px;" t-esc="line.usage_instructions or ''"/>-->
+<!--                                    </div>-->
+<!--                                </t>-->
+
+<!--                            </div>-->
+
+<!--                            &lt;!&ndash; Footer &ndash;&gt;-->
+<!--                            <div style="text-align:right; font-size:16px; margin-top:30px;">-->
+<!--                                نعتذر عن استقبال حالات الطوارئ-->
+<!--                                – الكشف والاستشارة بحجز مسبق-->
+<!--                            </div>-->
+
+<!--                            &lt;!&ndash; Clinic Info &ndash;&gt;-->
+<!--                            <div style="margin-top:25px; font-size:15px; text-align:right;">-->
+<!--                                <div>-->
+<!--                                    <span style="font-size:20px;">📍</span>-->
+<!--                                    عيادة: مركز بدر أمام بدر سكان-->
+<!--                                </div>-->
+
+<!--                                <div>-->
+<!--                                    <span style="font-size:20px;">📞</span>-->
+<!--                                    01012000168-->
+<!--                                </div>-->
+
+<!--                                <div>-->
+<!--                                    <span style="font-size:20px;">📞</span>-->
+<!--                                    01021208060-->
+<!--                                </div>-->
+
+<!--                                <div>-->
+<!--                                    <span style="font-size:20px;">📝</span>-->
+<!--                                    عيادة: مدينة السادات، خلف مستشفى السادات التخصصي-->
+<!--                                    بجوار نادي المهندسين-->
+<!--                                </div>-->
+<!--                            </div>-->
+
+<!--                        </div>-->
+<!--                    </t>-->
+<!--                </main>-->
+<!--            </t>-->
+<!--        </t>-->
+<!--    </template>-->
+<!--</odoo>-->

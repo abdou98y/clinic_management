@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Main Complaint list View -->
+        <record id="view_main_complaint_list" model="ir.ui.view">
+            <field name="name">main.complaint.list</field>
+            <field name="model">main.complaint</field>
+            <field name="arch" type="xml">
+                <list string="Main Complaints">
+                    <field name="date"/>
+                    <field name="description"/>
+                    <field name="patient_id"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Main Complaint Form View -->
+        <record id="view_main_complaint_form" model="ir.ui.view">
+            <field name="name">main.complaint.form</field>
+            <field name="model">main.complaint</field>
+            <field name="arch" type="xml">
+                <form string="Main Complaint">
+                    <sheet>
+                        <group>
+                            <field name="patient_id" readonly="patient_id != False" options="{'no_create': True, 'no_create_edit': True}"/>
+                            <field name="date"/>
+                            <field name="description"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Optional Action for Main Complaints -->
+        <record id="action_main_complaint" model="ir.actions.act_window">
+            <field name="name">Main Complaints</field>
+            <field name="res_model">main.complaint</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new main complaint
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

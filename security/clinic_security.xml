@@ -48,7 +48,7 @@
         <record id="patient_access_receptionist" model="ir.rule">
             <field name="name">Receptionist Patient Access</field>
             <field name="model_id" ref="model_clinic_patient"/>
-            <field name="groups" eval="[(4, ref('group_clinic_receptionist'))]"/>
+
             <field name="domain_force">[('active', '=', True), ('company_id', 'in', company_ids)]</field>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="True"/>
@@ -59,7 +59,6 @@
         <record id="patient_access_clinical_staff" model="ir.rule">
             <field name="name">Clinical Staff Patient Access</field>
             <field name="model_id" ref="model_clinic_patient"/>
-            <field name="groups" eval="[(4, ref('group_clinic_medical_assistant')), (4, ref('group_clinic_nurse')), (4, ref('group_clinic_physician'))]"/>
             <field name="domain_force">[('company_id', 'in', company_ids)]</field>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="True"/>
@@ -71,7 +70,6 @@
         <record id="vital_signs_access_medical_assistant" model="ir.rule">
             <field name="name">Medical Assistant Vital Signs Access</field>
             <field name="model_id" ref="model_clinic_vital_signs"/>
-            <field name="groups" eval="[(4, ref('group_clinic_medical_assistant'))]"/>
             <field name="domain_force">[('company_id', 'in', company_ids)]</field>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="True"/>
@@ -82,7 +80,6 @@
         <record id="vital_signs_access_clinical_staff" model="ir.rule">
             <field name="name">Clinical Staff Vital Signs Access</field>
             <field name="model_id" ref="model_clinic_vital_signs"/>
-            <field name="groups" eval="[(4, ref('group_clinic_nurse')), (4, ref('group_clinic_physician'))]"/>
             <field name="domain_force">[('company_id', 'in', company_ids)]</field>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="True"/>
@@ -94,7 +91,6 @@
         <record id="medication_access_all_clinical" model="ir.rule">
             <field name="name">Clinical Staff Medication Access</field>
             <field name="model_id" ref="model_clinic_medication"/>
-            <field name="groups" eval="[(4, ref('group_clinic_medical_assistant')), (4, ref('group_clinic_nurse')), (4, ref('group_clinic_physician'))]"/>
             <field name="domain_force">[('company_id', 'in', company_ids)]</field>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="False"/>
@@ -105,7 +101,6 @@
         <record id="medication_management_physician" model="ir.rule">
             <field name="name">Physician Medication Management</field>
             <field name="model_id" ref="model_clinic_medication"/>
-            <field name="groups" eval="[(4, ref('group_clinic_physician')), (4, ref('group_clinic_practice_manager'))]"/>
             <field name="domain_force">[('company_id', 'in', company_ids)]</field>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="True"/>
@@ -117,7 +112,6 @@
         <record id="prescription_access_nurse" model="ir.rule">
             <field name="name">Nurse Prescription Read Access</field>
             <field name="model_id" ref="model_clinic_prescription"/>
-            <field name="groups" eval="[(4, ref('group_clinic_nurse'))]"/>
             <field name="domain_force">[('company_id', 'in', company_ids)]</field>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="False"/>
@@ -128,7 +122,6 @@
         <record id="prescription_access_physician" model="ir.rule">
             <field name="name">Physician Prescription Full Access</field>
             <field name="model_id" ref="model_clinic_prescription"/>
-            <field name="groups" eval="[(4, ref('group_clinic_physician'))]"/>
             <field name="domain_force">[('company_id', 'in', company_ids)]</field>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="True"/>
@@ -140,7 +133,6 @@
         <record id="prescription_line_access_nurse" model="ir.rule">
             <field name="name">Nurse Prescription Line Read Access</field>
             <field name="model_id" ref="model_clinic_prescription_line"/>
-            <field name="groups" eval="[(4, ref('group_clinic_nurse'))]"/>
             <field name="domain_force">[('prescription_id.company_id', 'in', company_ids)]</field>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="False"/>
@@ -151,7 +143,6 @@
         <record id="prescription_line_access_physician" model="ir.rule">
             <field name="name">Physician Prescription Line Full Access</field>
             <field name="model_id" ref="model_clinic_prescription_line"/>
-            <field name="groups" eval="[(4, ref('group_clinic_physician'))]"/>
             <field name="domain_force">[('prescription_id.company_id', 'in', company_ids)]</field>
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="True"/>

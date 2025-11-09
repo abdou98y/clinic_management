@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import models, fields,api
 
 
 
@@ -14,3 +14,4 @@ class LabResult(models.Model):
     result_file = fields.Binary(string='Result File', attachment=True)  # For PDF or any binary
     result_image = fields.Image(string='Result Image')  # Optional, for images only
     notes = fields.Text(string='Notes')
+

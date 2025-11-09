@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        
+
         <!-- Prescription Report Action -->
         <record id="action_report_prescription" model="ir.actions.report">
             <field name="name">Prescription</field>
@@ -30,8 +30,8 @@
                                         <div style="font-size: 14px; color: #666;">
                                             <div><span t-field="prescription.company_id.street"/></div>
                                             <div>
-                                                <span t-field="prescription.company_id.city"/>, 
-                                                <span t-field="prescription.company_id.state_id.name"/> 
+                                                <span t-field="prescription.company_id.city"/>,
+                                                <span t-field="prescription.company_id.state_id.name"/>
                                                 <span t-field="prescription.company_id.zip"/>
                                             </div>
                                             <div>Phone: <span t-field="prescription.company_id.phone"/></div>
@@ -236,7 +236,7 @@
                                             <span t-field="prescription.allergies_noted"/>
                                         </div>
                                     </t>
-                                    
+
                                     <t t-if="prescription.special_instructions">
                                         <div style="border: 1px solid #ddd; padding: 10px; background-color: #f9f9f9;">
                                             <strong>Special Instructions:</strong><br/>
@@ -305,7 +305,7 @@
                         <h2>Prescription Summary Report</h2>
                         <p>Generated on <span t-esc="datetime.datetime.now().strftime('%Y-%m-%d %H:%M')"/></p>
                     </div>
-                    
+
                     <table class="table table-bordered">
                         <thead>
                             <tr>

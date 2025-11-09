@@ -26,11 +26,11 @@
                   action="action_clinic_vital_signs" 
                   sequence="20"/>
 
-        <menuitem id="menu_clinic_prescription" 
-                  name="Prescriptions" 
-                  parent="menu_clinic_patient_care" 
-                  action="action_clinic_prescription" 
-                  sequence="30"/>
+<!--        <menuitem id="menu_clinic_prescription" -->
+<!--                  name="Prescriptions" -->
+<!--                  parent="menu_clinic_patient_care" -->
+<!--                  action="action_clinic_prescription" -->
+<!--                  sequence="30"/>-->
 
         <menuitem id="menu_clinic_lab_result" 
                   name="Lab Results" 
@@ -38,23 +38,23 @@
                   action="action_clinic_lab_result" 
                   sequence="40"/>
 
-        <!-- Medication Management Menu -->
-        <menuitem id="menu_clinic_medication_management" 
-                  name="Medication Management" 
-                  parent="menu_clinic_management_root" 
-                  sequence="20"/>
+<!--        &lt;!&ndash; Medication Management Menu &ndash;&gt;-->
+<!--        <menuitem id="menu_clinic_medication_management" -->
+<!--                  name="Medication Management" -->
+<!--                  parent="menu_clinic_management_root" -->
+<!--                  sequence="20"/>-->
 
-        <menuitem id="menu_clinic_medication" 
-                  name="Medications" 
-                  parent="menu_clinic_medication_management" 
-                  action="action_clinic_medication" 
-                  sequence="10"/>
+<!--        <menuitem id="menu_clinic_medication" -->
+<!--                  name="Medications" -->
+<!--                  parent="menu_clinic_medication_management" -->
+<!--                  action="action_clinic_medication" -->
+<!--                  sequence="10"/>-->
 
-        <menuitem id="menu_clinic_medication_category" 
-                  name="Medication Categories" 
-                  parent="menu_clinic_medication_management" 
-                  action="action_clinic_medication_category" 
-                  sequence="20"/>
+<!--        <menuitem id="menu_clinic_medication_category" -->
+<!--                  name="Medication Categories" -->
+<!--                  parent="menu_clinic_medication_management" -->
+<!--                  action="action_clinic_medication_category" -->
+<!--                  sequence="20"/>-->
 
         <!-- Reports Menu -->
         <menuitem id="menu_clinic_reports" 
@@ -67,7 +67,7 @@
                   name="Configuration" 
                   parent="menu_clinic_management_root" 
                   sequence="40" 
-                  groups="clinic_management.group_clinic_practice_manager"/>
+                  />
 
         <!-- Quick Actions -->
         <record id="action_clinic_patient_quick" model="ir.actions.act_window">
@@ -84,12 +84,40 @@
             <field name="target">new</field>
         </record>
 
-        <record id="action_clinic_prescription_quick" model="ir.actions.act_window">
-            <field name="name">New Prescription</field>
-            <field name="res_model">clinic.prescription</field>
-            <field name="view_mode">form</field>
-            <field name="target">new</field>
-        </record>
+        <!-- Optional: list View for Treatments (if needed elsewhere) -->
+    <record id="medical_treatment_list" model="ir.ui.view">
+        <field name="name">medical.treatment.list</field>
+        <field name="model">medical.treatment</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="usage_ar"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View for Treatments (used when creating new from lines) -->
+    <record id="medical_treatment_form" model="ir.ui.view">
+        <field name="name">medical.treatment.form</field>
+        <field name="model">medical.treatment</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="usage_ar"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+<!--        <record id="action_clinic_prescription_quick" model="ir.actions.act_window">-->
+<!--            <field name="name">New Prescription</field>-->
+<!--            <field name="res_model">clinic.prescription</field>-->
+<!--            <field name="view_mode">form</field>-->
+<!--            <field name="target">new</field>-->
+<!--        </record>-->
 
     </data>
 </odoo>

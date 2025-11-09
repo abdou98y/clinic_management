@@ -1,0 +1,71 @@
+<odoo>
+
+
+
+    <!-- list View -->
+    <record id="view_medical_prescription_list" model="ir.ui.view">
+        <field name="name">medical.prescription.list</field>
+        <field name="model">medical.prescription</field>
+        <field name="arch" type="xml">
+            <list string="Prescriptions">
+                <field name="name"/>
+                <field name="patient_id"/>
+                <field name="main_complaint_id"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_medical_prescription_form" model="ir.ui.view">
+        <field name="name">medical.prescription.form</field>
+        <field name="model">medical.prescription</field>
+        <field name="arch" type="xml">
+            <form string="Prescription">
+                <header>
+                     <button name="action_print_prescription"
+                        type="object"
+                        class="btn-primary"
+                        string="Print Prescription"/>
+
+                </header>
+
+                <sheet>
+                    <group>
+                        <field name="patient_id" readonly="1"/>
+                        <field name="main_complaint_id"/>
+                        <field name="display_main_complaint" readonly="1"/>
+                    </group>
+
+                    <notebook>
+                        <page string="Treatments">
+                            <field name="treatment_line_ids">
+                                <list editable="bottom">
+                                    <field name="treatment_id"/>
+                                    <field name="usage_ar"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="action_medical_prescription" model="ir.actions.act_window">
+        <field name="name">Prescriptions</field>
+        <field name="res_model">medical.prescription</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+
+
+
+
+    <menuitem id="menu_medical_prescription"
+              name="Prescriptions"
+              parent="menu_clinic_management_root"
+              action="action_medical_prescription"/>
+
+</odoo>

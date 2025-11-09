@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        
+
         <!-- Patient Summary Report Action -->
         <record id="action_report_patient_summary" model="ir.actions.report">
             <field name="name">Patient Summary</field>
@@ -251,7 +251,7 @@
                                         <small style="color: #666;">
                                             Report generated on <span t-esc="datetime.datetime.now().strftime('%Y-%m-%d %H:%M')"/>
                                             <br/>
-                                            Last visit: 
+                                            Last visit:
                                             <t t-if="patient.last_visit_date">
                                                 <span t-field="patient.last_visit_date" t-options="{'widget': 'date'}"/>
                                             </t>
@@ -290,7 +290,7 @@
                                 <h3><span t-field="patient.name"/> (<span t-field="patient.patient_id"/>)</h3>
                                 <p>Generated on <span t-esc="datetime.datetime.now().strftime('%Y-%m-%d %H:%M')"/></p>
                             </div>
-                            
+
                             <t t-if="patient.vital_signs_ids">
                                 <table class="table table-bordered">
                                     <thead style="background-color: #2E86AB; color: white;">

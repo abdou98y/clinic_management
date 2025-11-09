@@ -10,8 +10,8 @@
                         <field name="patient_id"/>
                         <field name="date"/>
                         <field name="test_name"/>
-                        <field name="result_file" filename="result_filename"/>  <!-- Supports PDF upload -->
-                        <field name="result_image"/>  <!-- Image preview -->
+                        <field name="result_file"  widget="pdf_viewer" filename="result_filename"/>
+<!--                        <field name="result_image" widget="image" class="oe_avatar"/>-->
                         <field name="notes"/>
                     </group>
                 </sheet>

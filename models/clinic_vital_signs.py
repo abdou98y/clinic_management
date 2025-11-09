@@ -123,6 +123,16 @@ class ClinicVitalSigns(models.Model):
         digits=(5, 1),
         help="Height in centimeters (30.0-250.0 cm range)"
     )
+    mother_height = fields.Float(
+        string='Mother Height (cm)',
+        digits=(5, 1),
+        help="Height in centimeters (30.0-250.0 cm range)"
+    )
+    father_height = fields.Float(
+        string='Father Height (cm)',
+        digits=(5, 1),
+        help="Height in centimeters (30.0-250.0 cm range)"
+    )
     bmi = fields.Float(
         string='BMI',
         compute='_compute_bmi',
@@ -234,6 +244,30 @@ class ClinicVitalSigns(models.Model):
         compute='_compute_display_name',
         store=True
     )
+
+    main_complaint_id = fields.Many2one(
+        "main.complaint",
+        string="Main Complaint",
+        ondelete="restrict",
+        required=True,
+        default=lambda self: self.env['main.complaint'].search([], order="id desc", limit=1).id
+    )
+
+    display_main_complaint = fields.Char(
+        string="Main Complaint Display",
+        compute='_compute_display_main_complaint'
+    )
+
+
+    @api.depends('main_complaint_id', 'visit_datetime', 'chief_complaint')
+    def _compute_display_main_complaint(self):
+        for rec in self:
+            if rec.main_complaint_id:
+                rec.display_main_complaint = rec.main_complaint_id.name_get()[0][1]
+            else:
+                date_str = (rec.visit_datetime or fields.Datetime.now()).strftime('%Y-%m-%d')
+                desc = rec.chief_complaint or ''
+                rec.display_main_complaint = f"{date_str} - {desc[:50]}" if desc else date_str
 
     @api.depends('patient_id', 'visit_datetime')
     def _compute_display_name(self):
@@ -472,3 +506,22 @@ class ClinicVitalSigns(models.Model):
             'target': 'new',
         }
 
+    @api.model
+    def create(self, vals):
+        rec = super().create(vals)
+        if rec.patient_id:
+            rec.patient_id._on_related_changed()
+        return rec
+
+    def write(self, vals):
+        res = super().write(vals)
+        for rec in self:
+            if rec.patient_id:
+                rec.patient_id._on_related_changed()
+        return res
+
+    def unlink(self):
+        patients = self.mapped("patient_id")
+        res = super().unlink()
+        patients._on_related_changed()
+        return res

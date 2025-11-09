@@ -126,10 +126,10 @@ class ClinicPatient(models.Model):
         tracking=True,
         help="Ongoing medical conditions requiring management"
     )
-    past_treatments = fields.Text(
-        string='Past Treatments',
+    past_history = fields.Text(
+        string='Past History',
         tracking=True,
-        help="Previous treatments, surgeries, and hospitalizations"
+        help="Previous treatments, surgeries, and hospitalizations operations , accidences ,blood transfusion , disses  ,etc. "
     )
     current_medications = fields.Text(
         string='Current Medications',
@@ -140,10 +140,13 @@ class ClinicPatient(models.Model):
         help="Relevant family medical history"
     )
     social_history = fields.Text(
-        string='Social History',
+        string='Special habits of medical importance',
         help="Smoking, alcohol, drug use, and lifestyle factors"
     )
-
+    history_present_illness = fields.Text(
+        string='History of Present Illness',
+        help="Current illness history and symptoms"
+    )
     # System Fields
     active = fields.Boolean(
         string='Active',
@@ -171,13 +174,14 @@ class ClinicPatient(models.Model):
         'patient_id',
         string='Vital Signs Records'
     )
-    prescription_ids = fields.One2many(
-        'clinic.prescription',
-        'patient_id',
-        string='Prescriptions'
-    )
+    # prescription_ids = fields.One2many(
+    #     'clinic.prescription',
+    #     'patient_id',
+    #     string='Prescriptions'
+    # )
+    prescription_ids = fields.One2many('medical.prescription', 'patient_id', string="Prescriptions")    # Computed Fields
 
-    # Computed Fields
+
     vital_signs_count = fields.Integer(
         string='Vital Signs Count',
         compute='_compute_vital_signs_count'
@@ -190,7 +194,30 @@ class ClinicPatient(models.Model):
         string='Last Visit',
         compute='_compute_last_visit_date'
     )
-    
+    main_complaint_ids = fields.One2many(
+        "main.complaint",
+        "patient_id",
+        string="Main Complaints"
+    )
+
+    # Conditional fields
+    gravida = fields.Integer("G (Gravida)")
+    para = fields.Integer("P (Para)")
+    abortion = fields.Integer("A (Abortion)")
+    number_of_children = fields.Integer("Number of Children")
+
+    contraception_history = fields.Selection([
+        ('hormonal', 'Hormonal'),
+        ('loop', 'Loop'),
+        ('male_contraception', 'Male Contraception'),
+    ], string="History of Contraception")
+
+    puberty_age = fields.Integer("Puberty Age")
+    menarche_age = fields.Integer("Menarche Age")
+    chief_complaint = fields.Text(
+        string='Chief Complaint',
+        help="Primary reason for visit"
+    )
     #lap  result  relation field
     lab_result_ids = fields.One2many('clinic.lab.result', 'patient_id', string='Lab Results')
 
@@ -259,13 +286,13 @@ class ClinicPatient(models.Model):
             if record.mobile and not phone_pattern.match(record.mobile):
                 raise ValidationError(_('Invalid mobile number format.'))
 
-    @api.constrains('email')
-    def _check_email_format(self):
-        """Validate email format."""
-        email_pattern = re.compile(r'^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$')
-        for record in self:
-            if record.email and not email_pattern.match(record.email):
-                raise ValidationError(_('Invalid email format.'))
+    # @api.constrains('email')
+    # def _check_email_format(self):
+    #     """Validate email format."""
+    #     email_pattern = re.compile(r'^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$')
+    #     for record in self:
+    #         if record.email and not email_pattern.match(record.email):
+    #             raise ValidationError(_('Invalid email format.'))
 
     def name_get(self):
         """Custom name display including patient ID."""
@@ -345,50 +372,50 @@ class ClinicPatient(models.Model):
             'target': 'new',
         }
 
-    def get_latest_vital_signs(self):
-        """Get the most recent vital signs record for the patient."""
-        self.ensure_one()
-        return self.vital_signs_ids.sorted('visit_datetime', reverse=True)[:1]
+    # def get_latest_vital_signs(self):
+    #     """Get the most recent vital signs record for the patient."""
+    #     self.ensure_one()
+    #     return self.vital_signs_ids.sorted('visit_datetime', reverse=True)[:1]
 
-    def get_active_prescriptions(self):
-        """Get active prescriptions for the patient."""
-        self.ensure_one()
-        return self.prescription_ids.filtered(
-            lambda p: p.state in ['confirmed', 'dispensed'] and 
-            p.prescription_date >= fields.Datetime.now() - fields.Datetime.timedelta(days=90)
-        )
+    # def get_active_prescriptions(self):
+    #     """Get active prescriptions for the patient."""
+    #     self.ensure_one()
+    #     return self.prescription_ids.filtered(
+    #         lambda p: p.state in ['confirmed', 'dispensed'] and
+    #         p.prescription_date >= fields.Datetime.now() - fields.Datetime.timedelta(days=90)
+    #     )
 
-    def check_drug_allergies(self, medication_id):
-        """Check if patient has allergies to the specified medication."""
-        self.ensure_one()
-        if not self.allergies or not medication_id:
-            return False
-        
-        medication = self.env['clinic.medication'].browse(medication_id)
-        allergy_text = self.allergies.lower()
-        
-        # Check against medication name and common allergy terms
-        medication_terms = [
-            medication.name.lower(),
-            medication.generic_name.lower() if medication.generic_name else '',
-            medication.drug_class.lower() if medication.drug_class else ''
-        ]
-        
-        for term in medication_terms:
-            if term and term in allergy_text:
-                return True
-        
-        return False
+    # def check_drug_allergies(self, medication_id):
+    #     """Check if patient has allergies to the specified medication."""
+    #     self.ensure_one()
+    #     if not self.allergies or not medication_id:
+    #         return False
+    #
+    #     medication = self.env['clinic.medication'].browse(medication_id)
+    #     allergy_text = self.allergies.lower()
+    #
+    #     # Check against medication name and common allergy terms
+    #     medication_terms = [
+    #         medication.name.lower(),
+    #         medication.generic_name.lower() if medication.generic_name else '',
+    #         medication.drug_class.lower() if medication.drug_class else ''
+    #     ]
+    #
+    #     for term in medication_terms:
+    #         if term and term in allergy_text:
+    #             return True
+    #
+    #     return False
 
-    @api.model
-    def get_patients_needing_followup(self):
-        """Get patients who need follow-up based on last visit date."""
-        cutoff_date = fields.Datetime.now() - fields.Datetime.timedelta(days=90)
-        return self.search([
-            ('active', '=', True),
-            ('last_visit_date', '<', cutoff_date),
-            ('chronic_conditions', '!=', False)
-        ])
+    # @api.model
+    # def get_patients_needing_followup(self):
+    #     """Get patients who need follow-up based on last visit date."""
+    #     cutoff_date = fields.Datetime.now() - fields.Datetime.timedelta(days=90)
+    #     return self.search([
+    #         ('active', '=', True),
+    #         ('last_visit_date', '<', cutoff_date),
+    #         ('chronic_conditions', '!=', False)
+    #     ])
 
     def archive_patient(self):
         """Archive patient record with confirmation."""

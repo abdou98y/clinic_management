@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        
+
         <!-- Prescription list View -->
         <record id="view_clinic_prescription_list" model="ir.ui.view">
             <field name="name">clinic.prescription.list</field>
             <field name="model">clinic.prescription</field>
             <field name="arch" type="xml">
-                <list string="Prescriptions" sample="1" decoration-info="state == 'draft'" 
+                <list string="Prescriptions" sample="1" decoration-info="state == 'draft'"
                       decoration-success="state == 'confirmed'" decoration-warning="controlled_substances == True">
                     <field name="prescription_number"/>
                     <field name="prescription_date"/>
@@ -41,22 +41,22 @@
             <field name="arch" type="xml">
                 <form string="Prescription">
                     <header>
-                        <button name="action_confirm" type="object" 
+                        <button name="action_confirm" type="object"
                                 string="Confirm Prescription" class="btn-primary"
                                 invisible="state != 'draft'"/>
-                        <button name="action_print_prescription" type="object" 
+                        <button name="action_print_prescription" type="object"
                                 string="Print Prescription" class="btn-primary"
                                 invisible ="state == 'draft'"/>
-                        <button name="action_transmit_electronically" type="object" 
+                        <button name="action_transmit_electronically" type="object"
                                 string="Send to Pharmacy" class="btn-secondary"
                                 invisible="state != 'confirmed'"/>
-                        <button name="action_mark_dispensed" type="object" 
+                        <button name="action_mark_dispensed" type="object"
                                 string="Mark as Dispensed" class="btn-secondary"
                                 invisible="state != 'confirmed'"/>
-                        <button name="duplicate_prescription" type="object" 
+                        <button name="duplicate_prescription" type="object"
                                 string="Create Refill" class="btn-secondary"
                                 invisible="state != 'confirmed' and refills_remaining == 0"/>
-                        <button name="action_cancel" type="object" 
+                        <button name="action_cancel" type="object"
                                 string="Cancel" class="btn-secondary"
                                 ainvisible= "state in ['cancelled', 'dispensed']"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,dispensed"/>
@@ -76,7 +76,7 @@
                                 <field name="prescription_date"/>
                                 <field name="prescriber_id" options="{'no_create': True}" required="1"/>
                                 <field name="prescriber_license" readonly="1"/>
-                                <field name="prescriber_dea" readonly="1" 
+                                <field name="prescriber_dea" readonly="1"
                                        invisible= "controlled_substances == False"/>
                                 <field name="vital_signs_id" domain="[('patient_id', '=', patient_id)]"/>
                             </group>
@@ -84,7 +84,7 @@
                                 <field name="diagnosis_codes"/>
                                 <field name="clinical_indication"/>
                                 <field name="patient_weight"/>
-                                <field name="pregnancy_status" 
+                                <field name="pregnancy_status"
                                        invisible=" patient_id.gender  != 'female'"/>
                                 <field name="generic_substitution"/>
                             </group>
@@ -99,14 +99,14 @@
                                 <field name="prescription_line_ids">
                                     <list string="Prescribed Medications" editable="bottom">
                                         <field name="sequence" widget="handle"/>
-                                        <field name="medication_id" 
+                                        <field name="medication_id"
                                                options="{'no_create': True, 'no_create_edit': True}"
                                                domain="[('active', '=', True)]"/>
                                         <field name="strength_prescribed"/>
                                         <field name="dosage_form_prescribed"/>
                                         <field name="dose_amount"/>
                                         <field name="frequency"/>
-                                        <field name="frequency_text" 
+                                        <field name="frequency_text"
                                                invisible= "frequency != 'custom'" required= "frequency == 'custom'"/>
                                         <field name="duration"/>
                                         <field name="quantity_prescribed"/>
@@ -114,13 +114,13 @@
                                         <field name="refills_authorized"/>
                                         <field name="special_instructions"/>
                                         <field name="is_controlled_substance" invisible="1"/>
-                                        <field name="controlled_schedule" 
+                                        <field name="controlled_schedule"
                                                invisible = "is_controlled_substance == False"/>
                                     </list>
                                     <form string="Medication Line">
                                         <group>
                                             <group name="medication_info" string="Medication">
-                                                <field name="medication_id" 
+                                                <field name="medication_id"
                                                        options="{'no_create': True, 'no_create_edit': True}"
                                                        domain="[('active', '=', True)]"/>
                                                 <field name="strength_prescribed"/>
@@ -130,13 +130,13 @@
                                             <group name="dosing_info" string="Dosing">
                                                 <field name="dose_amount"/>
                                                 <field name="frequency"/>
-                                                <field name="frequency_text" 
+                                                <field name="frequency_text"
                                                        invisible=" frequency != 'custom'" required="frequency == 'custom'"/>
                                                 <field name="duration"/>
                                                 <field name="duration_days"/>
                                             </group>
                                         </group>
-                                        
+
                                         <group>
                                             <group name="quantity_info" string="Quantity &amp; Refills">
                                                 <field name="quantity_prescribed"/>
@@ -156,19 +156,19 @@
                                                        invisible= "is_controlled_substance == False"/>
                                             </group>
                                         </group>
-                                        
+
                                         <group name="instructions" string="Instructions &amp; Monitoring">
-                                            <field name="special_instructions" 
+                                            <field name="special_instructions"
                                                    placeholder="e.g., Take with food, Take at bedtime, Avoid alcohol..."/>
-                                            <field name="patient_counseling" 
+                                            <field name="patient_counseling"
                                                    placeholder="Important patient education points..."/>
-                                            <field name="monitoring_required" 
+                                            <field name="monitoring_required"
                                                    placeholder="Required monitoring (e.g., Monitor blood pressure, Check liver function)..."/>
                                             <field name="stop_date"/>
                                         </group>
                                     </form>
                                 </field>
-                                
+
                                 <group name="prescription_summary" string="Prescription Summary">
                                     <group>
                                         <field name="total_medications" readonly="1"/>
@@ -177,17 +177,17 @@
                                     </group>
                                 </group>
                             </page>
-                            
+
                             <page name="instructions" string="Instructions &amp; Notes">
                                 <group>
-                                    <field name="special_instructions" 
+                                    <field name="special_instructions"
                                            placeholder="Additional instructions for patient or pharmacist..."/>
                                     <field name="follow_up_date"/>
-                                    <field name="notes" 
+                                    <field name="notes"
                                            placeholder="Internal notes not printed on prescription..."/>
                                 </group>
                             </page>
-                            
+
                             <page name="dispensing" string="Dispensing Information">
                                 <group>
                                     <group name="pharmacy_info" string="Pharmacy Information">
@@ -225,46 +225,46 @@
                     <field name="prescriber_id" string="Prescriber"/>
                     <field name="diagnosis_codes" string="Diagnosis"/>
                     <field name="clinical_indication" string="Indication"/>
-                    
-                    <filter name="draft" string="Draft" 
+
+                    <filter name="draft" string="Draft"
                             domain="[('state', '=', 'draft')]"/>
-                    <filter name="confirmed" string="Confirmed" 
+                    <filter name="confirmed" string="Confirmed"
                             domain="[('state', '=', 'confirmed')]"/>
-                    <filter name="dispensed" string="Dispensed" 
+                    <filter name="dispensed" string="Dispensed"
                             domain="[('state', '=', 'dispensed')]"/>
-                    <filter name="cancelled" string="Cancelled" 
+                    <filter name="cancelled" string="Cancelled"
                             domain="[('state', '=', 'cancelled')]"/>
-                    
+
                     <separator/>
-                    <filter name="controlled_substances" string="Controlled Substances" 
+                    <filter name="controlled_substances" string="Controlled Substances"
                             domain="[('controlled_substances', '=', True)]"/>
-                    <filter name="non_controlled" string="Non-Controlled" 
+                    <filter name="non_controlled" string="Non-Controlled"
                             domain="[('controlled_substances', '=', False)]"/>
-                    
+
                     <separator/>
-                    <filter name="today" string="Today" 
+                    <filter name="today" string="Today"
                             domain="[('prescription_date', '>=', datetime.datetime.combine(context_today(), datetime.time(0,0,0))), ('prescription_date', '&lt;=', datetime.datetime.combine(context_today(), datetime.time(23,59,59)))]"/>
-                    <filter name="this_week" string="This Week" 
+                    <filter name="this_week" string="This Week"
                             domain="[('prescription_date', '>=', (context_today() - datetime.timedelta(days=context_today().weekday())).strftime('%Y-%m-%d')), ('prescription_date', '&lt;=', (context_today() + datetime.timedelta(days=6-context_today().weekday())).strftime('%Y-%m-%d'))]"/>
-                    <filter name="this_month" string="This Month" 
+                    <filter name="this_month" string="This Month"
                             domain="[('prescription_date', '>=', context_today().replace(day=1).strftime('%Y-%m-%d')), ('prescription_date', '&lt;=', (context_today().replace(day=1) + datetime.timedelta(days=32)).replace(day=1) - datetime.timedelta(days=1)).strftime('%Y-%m-%d'))]"/>
-                    
+
                     <separator/>
-                    <filter name="printed" string="Printed" 
+                    <filter name="printed" string="Printed"
                             domain="[('printed', '=', True)]"/>
-                    <filter name="transmitted" string="Transmitted" 
+                    <filter name="transmitted" string="Transmitted"
                             domain="[('transmitted', '=', True)]"/>
-                    <filter name="has_refills" string="Has Refills" 
+                    <filter name="has_refills" string="Has Refills"
                             domain="[('refills_remaining', '>', 0)]"/>
-                    
+
                     <group expand="0" string="Group By">
-                        <filter name="group_by_patient" string="Patient" 
+                        <filter name="group_by_patient" string="Patient"
                                 context="{'group_by': 'patient_id'}"/>
-                        <filter name="group_by_prescriber" string="Prescriber" 
+                        <filter name="group_by_prescriber" string="Prescriber"
                                 context="{'group_by': 'prescriber_id'}"/>
-                        <filter name="group_by_state" string="Status" 
+                        <filter name="group_by_state" string="Status"
                                 context="{'group_by': 'state'}"/>
-                        <filter name="group_by_date" string="Date" 
+                        <filter name="group_by_date" string="Date"
                                 context="{'group_by': 'prescription_date:day'}"/>
                     </group>
                 </search>

@@ -35,7 +35,7 @@
                     <header>
                         <button name="action_create_prescription" type="object" 
                                 string="Create Prescription" class="btn-primary"
-                                groups="clinic_management.group_clinic_physician"/>
+                                />
                     </header>
                     <sheet>
                         <div class="oe_title">
@@ -50,12 +50,13 @@
                         <group>
                             <group name="visit_info" string="Visit Information">
                                 <field name="visit_type"/>
-                                <field name="recorded_by" options="{'no_create': True}"/>
+                                <field name="recorded_by" readonly="1" options="{'no_create': True}"/>
+                                <field name="display_main_complaint"/>
                             </group>
                         </group>
 
-                        <notebook>
-                            <page name="vital_signs" string="Vital Signs">
+<!--                        <notebook>-->
+<!--                            <page name="vital_signs" string="Vital Signs">-->
                                 <group>
                                     <group name="cardiovascular" string="Cardiovascular">
                                         <field name="systolic_bp"/>
@@ -85,35 +86,37 @@
                                         <field name="weight"/>
                                         <field name="height"/>
                                         <field name="bmi" readonly="1"/>
-                                        <field name="bmi_category" readonly="1" 
+                                        <field name="mother_height"/>
+                                        <field name="father_height"/>
+                                        <field name="bmi_category" readonly="1"
                                                invisible="bmi_category == False"/>
                                         <field name="head_circumference" />
                                         <field name="waist_circumference"/>
                                     </group>
                                 </group>
-                            </page>
+<!--                            </page>-->
                             
-                            <page name="clinical_assessment" string="Clinical Assessment">
-                                <group>
-                                    <group name="assessment" string="Assessment">
-                                        <field name="pain_scale"/>
-                                        <field name="consciousness_level"/>
-                                        <field name="mobility_status"/>
-                                        <field name="skin_condition"/>
-                                    </group>
-                                </group>
-                                
-                                <group name="clinical_notes" string="Clinical Notes">
-                                    <field name="chief_complaint" placeholder="Primary reason for visit..."/>
-                                    <field name="history_present_illness" placeholder="Current illness history and symptoms..."/>
-                                    <field name="physical_examination" placeholder="Physical examination findings..."/>
-                                    <field name="diagnosis" placeholder="Clinical diagnosis or impression..."/>
-                                    <field name="assessment_plan" placeholder="Clinical assessment and treatment plan..."/>
-                                    <field name="doctor_remarks" placeholder="Additional physician notes and observations..."/>
-                                    <field name="follow_up_instructions" placeholder="Patient follow-up and care instructions..."/>
-                                </group>
-                            </page>
-                        </notebook>
+<!--                            <page name="clinical_assessment" string="Clinical Assessment">-->
+<!--                                <group>-->
+<!--                                    <group name="assessment" string="Assessment">-->
+<!--                                        <field name="pain_scale"/>-->
+<!--                                        <field name="consciousness_level"/>-->
+<!--                                        <field name="mobility_status"/>-->
+<!--                                        <field name="skin_condition"/>-->
+<!--                                    </group>-->
+<!--                                </group>-->
+<!--                                -->
+<!--                                <group name="clinical_notes" string="Clinical Notes">-->
+<!--                                    <field name="chief_complaint" placeholder="Primary reason for visit..."/>-->
+<!--                                    <field name="history_present_illness" placeholder="Current illness history and symptoms..."/>-->
+<!--                                    <field name="physical_examination" placeholder="Physical examination findings..."/>-->
+<!--                                    <field name="diagnosis" placeholder="Clinical diagnosis or impression..."/>-->
+<!--                                    <field name="assessment_plan" placeholder="Clinical assessment and treatment plan..."/>-->
+<!--                                    <field name="doctor_remarks" placeholder="Additional physician notes and observations..."/>-->
+<!--                                    <field name="follow_up_instructions" placeholder="Patient follow-up and care instructions..."/>-->
+<!--                                </group>-->
+<!--                            </page>-->
+<!--                        </notebook>-->
                     </sheet>
                     <chatter/>
                     <!-- <div class="oe_chatter">

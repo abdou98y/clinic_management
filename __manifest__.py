@@ -32,26 +32,34 @@ patient care workflows from registration through diagnosis and treatment.
     ],
     'data': [
         # Security
-        'security/clinic_security.xml',
+        # 'security/clinic_security.xml',
         'security/ir.model.access.csv',
-        
+        # 'views/patient_assets.xml',
+
+        # Reports
+        # 'report/clinic_prescription_report.xml',
+        'report/clinic_patient_report.xml',
+        'report/report_medical_prescription.xml',
+        'report/report_medical_prescription_action.xml',
+
         # Data
         'data/clinic_sequence.xml',
-        'data/clinic_medication_data.xml',
+        # 'data/clinic_medication_data.xml',
         # 'data/clinic_vital_signs_reference.xml',
-        
+
         # Views
         'views/clinic_patient_views.xml',
         'views/clinic_vital_signs_views.xml',
-        'views/clinic_medication_views.xml',
-        'views/clinic_prescription_views.xml',
+        # 'views/clinic_medication_views.xml',
+        # 'views/clinic_prescription_views.xml',
         'views/lap_result.xml',
         'views/clinic_menu.xml',
-        
-        # Reports
-        'report/clinic_prescription_report.xml',
-        'report/clinic_patient_report.xml',
-        
+        'views/patient_complaint.xml',
+        'views/prescription.xml',
+
+
+
+
         # Wizards
         # 'wizard/clinic_prescription_wizard_views.xml',
     ],
@@ -66,6 +74,9 @@ patient care workflows from registration through diagnosis and treatment.
         'web.assets_frontend': [
             'clinic_management/static/src/css/clinic_portal.css',
         ],
+        'web.report_assets_common': [
+                'clinic_management/static/src/scss/fonts.scss',
+            ],
     },
     'images': ['static/description/banner.png'],
     'installable': True,
