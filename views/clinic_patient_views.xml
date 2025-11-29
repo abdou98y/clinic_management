@@ -12,7 +12,6 @@
                     <field name="age"/>
                     <field name="gender"/>
                     <field name="phone"/>
-<!--                    <field name="email"/>-->
                     <field name="last_visit_date"/>
                     <field name="vital_signs_count"/>
                     <field name="prescription_count"/>
@@ -20,7 +19,6 @@
                 </list>
             </field>
         </record>
-
         <!-- Patient Form View -->
         <record id="view_clinic_patient_form" model="ir.ui.view">
             <field name="name">clinic.patient.form</field>
@@ -37,7 +35,6 @@
                         <button name="archive_patient" type="object"
                                 string="Archive Patient" class="btn-secondary"
                                 invisible="active == False"/>
-
                         <button name="unarchive_patient" type="object"
                                 string="Unarchive Patient" class="btn-secondary"
                                 invisible= "active == True"/>
@@ -56,9 +53,6 @@
                                        string="Prescriptions"/>
                             </button>
                         </div>
-
-<!--                        <field name="image" widget="image" class="oe_avatar"/>-->
-
                         <div class="oe_title">
                             <h1>
                                 <field name="name" placeholder="Patient Full Name" required="1"/>
@@ -67,66 +61,50 @@
                                 <field name="patient_id" readonly="1"/>
                             </h2>
                         </div>
-
-
                         <group>
                             <group name="personal_info" string="Personal Information">
                                 <field name="date_of_birth"/>
                                 <field name="age" readonly="1"/>
-                                <field name="gender" required="1"/>
+                                <field name="gender"/>
                                 <field name="marital_status"/>
                                 <field name="occupation"/>
                             </group>
-
                             <group name="contact_info" string="Contact Information">
                                 <field name="phone"/>
                                 <field name="city"/>
                             </group>
-
                             <!-- Conditional: Gestational History for non-single females -->
                             <group string="Gestational History"
-                               invisible="gender != 'female' or marital_status == 'single'">
-
+                                   invisible="gender != 'female' or marital_status == 'single'">
                             <div class="o_row">
                                 <label for="gravida" string="G:"/>
                                 <field name="gravida" class="o_input_small" style="width:60px;"/>
-
                                 <label for="para" string="P:" style="margin-left:10px;"/>
                                 <field name="para" class="o_input_small" style="width:60px;"/>
-
                                 <label for="abortion" string="A:" style="margin-left:10px;"/>
                                 <field name="abortion" class="o_input_small" style="width:60px;"/>
                             </div>
-
                         </group>
-
                             <group string="Children Information"
                                    invisible="gender != 'male' or marital_status == 'single'">
                                 <field name="number_of_children"/>
                             </group>
-
                             <!-- Conditional: Contraception history (females only) -->
                             <group string="Contraception"
                                    invisible="gender != 'female'">
                                 <field name="contraception_history"/>
                             </group>
-
                             <!-- Conditional: Puberty age (males only) -->
                             <group string="Puberty"
                                    invisible="gender != 'male'">
                                 <field name="puberty_age"/>
                             </group>
-
                             <!-- Conditional: Menarche age (females only) -->
                             <group string="Menarche"
                                    invisible="gender != 'female'">
                                 <field name="menarche_age"/>
                             </group>
                         </group>
-
-
-
-
                         <notebook>
                              <page name="main_complaint" string="Main Complaint">
                                 <field name="main_complaint_ids"
@@ -134,11 +112,10 @@
                                     <list string="Main Complaints Records">
                                         <field name="date"/>
                                         <field name="description"
-                                               placeholder="why the patient came to visit ?" />
+                                              placeholder="why the patient came to visit ?" />
                                     </list>
                                 </field>
                             </page>
-
                             <page name="medical_history" string="Medical History">
                                 <group>
                                     <field name="history_present_illness" placeholder="Current illness history and symptoms..."/>
@@ -148,7 +125,6 @@
                                     <field name="social_history" placeholder="Smoking, alcohol, drug use, and lifestyle factors..."/>
                                 </group>
                             </page>
-
                             <page name="vital_signs" string="Examination">
                                 <field name="vital_signs_ids" context="{'default_patient_id': id}">
                                     <list string="Examination Records" limit="10" >
@@ -164,7 +140,6 @@
                                     </list>
                                 </field>
                             </page>
-
                             <page string="Lab Results">
                                 <field name="lab_result_ids">
                                     <list>
@@ -173,17 +148,17 @@
                                     </list>
                                 </field>
                             </page>
-
                             <page string="Prescriptions">
                                 <field name="prescription_ids" context="{'default_patient_id': id}">
                                     <list>
-                                        <field name="create_date" string="Date"/>
+                                        <field name="name" string="Prescription"/>  <!-- Displays the custom name -->
+                                        <field name="create_date" string="Date"/>  <!-- Optional, hide by default -->
+                                        <button name="action_print_prescription" type="object" string="Print" class="btn-primary" icon="fa-print"/>
                                     </list>
                                     <form>
                                         <sheet>
                                             <group>
                                                 <field name="patient_id" readonly="1"/>
-                                                <field name="main_complaint_id"/>
                                             </group>
                                             <notebook>
                                                 <page string="Treatments">
@@ -207,10 +182,6 @@
                                     </form>
                                 </field>
                             </page>
-
-
-
-
                             <page name="notes" string="Notes">
                                 <field name="notes" placeholder="Additional notes and observations..."/>
                             </page>
@@ -220,7 +191,6 @@
                 </form>
             </field>
         </record>
-
         <!-- Patient Kanban View -->
         <record id="view_clinic_patient_kanban" model="ir.ui.view">
             <field name="name">clinic.patient.kanban</field>
@@ -233,19 +203,13 @@
                     <field name="age"/>
                     <field name="gender"/>
                     <field name="phone"/>
-<!--                    <field name="email"/>-->
                     <field name="last_visit_date"/>
                     <field name="vital_signs_count"/>
                     <field name="prescription_count"/>
-<!--                    <field name="image"/>-->
                     <field name="active"/>
                     <templates>
-                        <t t-name="kanban-box">
+                        <t t-name="card">  <!-- Changed from "kanban-box" to "card" -->
                             <div class="oe_kanban_card oe_kanban_global_click">
-<!--                                <div class="o_kanban_image">-->
-<!--                                    <img t-att-src="kanban_image('clinic.patient', 'image', record.id.raw_value)"-->
-<!--                                         alt="Patient" class="o_image_64_cover"/>-->
-<!--                                </div>-->
                                 <div class="oe_kanban_details">
                                     <div class="o_kanban_record_top">
                                         <div class="o_kanban_record_headings">
@@ -261,7 +225,6 @@
                                     <div class="o_kanban_record_body">
                                         <field name="phone" widget="phone"/>
                                         <br/>
-<!--                                        <field name="email" widget="email"/>-->
                                     </div>
                                     <div class="o_kanban_record_bottom">
                                         <div class="oe_kanban_bottom_left">
@@ -283,7 +246,5 @@
                 </kanban>
             </field>
         </record>
-
-
     </data>
 </odoo>

@@ -1,6 +1,25 @@
 @font-face {
-    font-family: 'Tajawal';
-    src: url('/clinic_management/static/src/fonts/Tajawal-Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
+  font-family: 'Tajawal';
+  src: url('/clinic_management/static/src/fonts/Tajawal-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Tajawal';
+  src: url('/clinic_management/static/src/fonts/Tajawal-Regular.ttf') format('truetype'); /* if you have a bold file */
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* keep your rules, ensure they reference Tajawal */
+.o_report_arabic,
+.report_arabic {
+  font-family: 'Tajawal', 'Arial Unicode MS', Arial, sans-serif !important;
+  direction: rtl !important;
+  text-align: right !important;
+  unicode-bidi: embed !important;
+  font-weight: 400 !important;
 }

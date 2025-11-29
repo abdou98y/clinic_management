@@ -1,11 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- 1. Make sure the ir.model reference exists (required for binding) -->
+    <record id="model_medical_prescription" model="ir.model">
+        <field name="model">medical.prescription</field>
+        <field name="name">Medical Prescription</field>
+    </record>
+
+    <!-- 2. The report itself – NO paperformat_id line (it does NOT exist in Odoo 19) -->
     <record id="report_medical_prescription" model="ir.actions.report">
         <field name="name">Medical Prescription</field>
         <field name="model">medical.prescription</field>
-        <field name="report_type">qweb-html</field>
+        <field name="report_type">qweb-pdf</field>
         <field name="report_name">clinic_management.template_medical_prescription</field>
         <field name="report_file">clinic_management.template_medical_prescription</field>
+
+        <!-- Safe filename when printing -->
+        <field name="print_report_name">('Prescription - %s' % (object.patient_id.name or object.name or 'New'))</field>
+
+        <!-- This makes “Print → Medical Prescription” appear in the header -->
         <field name="binding_model_id" ref="model_medical_prescription"/>
-        <field name="print_report_name">'Prescription - %s' % (object.patient_id.name or 'Unnamed')</field>
+        <field name="binding_type">report</field>
+
+        <!-- Optional but recommended – prevents printing multiple records at once -->
+        <field name="multi">False</field>
     </record>
 </odoo>

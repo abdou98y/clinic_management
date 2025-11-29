@@ -7,7 +7,6 @@
             <list string="Prescriptions">
                 <field name="name"/>
                 <field name="patient_id"/>
-                <field name="main_complaint_id"/>
             </list>
         </field>
     </record>
@@ -20,16 +19,15 @@
             <form string="Prescription">
                <header>
                     <button name="action_print_prescription"
-                        type="object"
-                        class="btn-primary"
-                        string="Print Prescription"
-                        context="{'type': 'html'}"/>  <!-- Optional: Hint for HTML rendering -->
+                            type="object"
+                            string="Print Prescription"
+                            class="btn-primary"
+                            icon="fa-print"/>
                 </header>
 
                 <sheet>
                     <group>
                         <field name="patient_id" readonly="1"/>
-                        <field name="main_complaint_id"/>
                     </group>
 
                     <notebook>

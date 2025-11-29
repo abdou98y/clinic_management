@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
-
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError, UserError
 from datetime import date, datetime
 import re
-
 
 class ClinicPatient(models.Model):
     _name = 'clinic.patient'
@@ -20,15 +18,15 @@ class ClinicPatient(models.Model):
 
     # Personal Information Fields
     name = fields.Char(
-        string='Full Name', 
-        required=True, 
+        string='Full Name',
+        required=True,
         tracking=True,
         help="Patient's full legal name"
     )
     patient_id = fields.Char(
-        string='Patient ID', 
-        required=True, 
-        copy=False, 
+        string='Patient ID',
+        required=True,
+        copy=False,
         readonly=True,
         default=lambda self: _('New'),
         tracking=True,
@@ -49,8 +47,8 @@ class ClinicPatient(models.Model):
         ('male', 'Male'),
         ('female', 'Female'),
         ('other', 'Other')
-    ], string='Gender', required=True, tracking=True)
-    
+    ], string='Gender', required=False, tracking=True)
+   
     marital_status = fields.Selection([
         ('single', 'Single'),
         ('married', 'Married'),
@@ -58,22 +56,18 @@ class ClinicPatient(models.Model):
         ('widowed', 'Widowed'),
         ('other', 'Other')
     ], string='Marital Status')
-    
+   
     occupation = fields.Char(
         string='Occupation',
         help="Patient's occupation for occupational health considerations"
     )
-    
-
+   
     # Contact Information Fields
     phone = fields.Char(
         string='Phone Number',
         tracking=True
     )
-
     city = fields.Char(string='City')
-
-
     allergies = fields.Text(
         string='Known Allergies',
         tracking=True,
@@ -115,18 +109,13 @@ class ClinicPatient(models.Model):
         string='General Notes',
         help="Additional notes and observations"
     )
-
-
     # Relationship Fields
     vital_signs_ids = fields.One2many(
         'clinic.vital.signs',
         'patient_id',
         string='Vital Signs Records'
     )
-
     prescription_ids = fields.One2many('medical.prescription', 'patient_id', string="Prescriptions")    # Computed Fields
-
-
     vital_signs_count = fields.Integer(
         string='Vital Signs Count',
         compute='_compute_vital_signs_count'
@@ -144,19 +133,16 @@ class ClinicPatient(models.Model):
         "patient_id",
         string="Main Complaints"
     )
-
     # Conditional fields
     gravida = fields.Integer("G (Gravida)")
     para = fields.Integer("P (Para)")
     abortion = fields.Integer("A (Abortion)")
     number_of_children = fields.Integer("Number of Children")
-
     contraception_history = fields.Selection([
         ('hormonal', 'Hormonal'),
         ('loop', 'Loop'),
         ('male_contraception', 'Male Contraception'),
     ], string="History of Contraception")
-
     puberty_age = fields.Integer("Puberty Age")
     menarche_age = fields.Integer("Menarche Age")
     chief_complaint = fields.Text(
@@ -165,6 +151,8 @@ class ClinicPatient(models.Model):
     )
     #lap  result  relation field
     lab_result_ids = fields.One2many('clinic.lab.result', 'patient_id', string='Lab Results')
+
+
 
     @api.depends('date_of_birth')
     def _compute_age(self):
@@ -200,12 +188,13 @@ class ClinicPatient(models.Model):
             else:
                 record.last_visit_date = False
 
-    @api.model
-    def create(self, vals):
+    @api.model_create_multi  # Add this decorator for multi-record support
+    def create(self, vals_list):
         """Override create to generate patient ID sequence."""
-        if vals.get('patient_id', _('New')) == _('New'):
-            vals['patient_id'] = self.env['ir.sequence'].next_by_code('clinic.patient') or _('New')
-        return super().create(vals)
+        for vals in vals_list:  # Loop over the list of dicts
+            if vals.get('patient_id', _('New')) == _('New'):
+                vals['patient_id'] = self.env['ir.sequence'].next_by_code('clinic.patient') or _('New')
+        return super().create(vals_list)
 
     @api.constrains('date_of_birth')
     def _check_date_of_birth(self):
@@ -244,7 +233,7 @@ class ClinicPatient(models.Model):
         """Enhanced search by name, patient ID, or phone."""
         args = args or []
         domain = []
-        
+       
         if name:
             domain = [
                 '|', '|', '|',
@@ -253,7 +242,7 @@ class ClinicPatient(models.Model):
                 ('phone', operator, name),
                 ('mobile', operator, name)
             ]
-        
+       
         patients = self.search(domain + args, limit=limit)
         return patients.name_get()
 
@@ -323,4 +312,337 @@ class ClinicPatient(models.Model):
         self.ensure_one()
         self.active = True
         self.message_post(body=_('Patient record reactivated.'))
+
+
+
+
+
+
+
+
+# # -*- coding: utf-8 -*-
+
+# from odoo import models, fields, api, _
+# from odoo.exceptions import ValidationError, UserError
+# from datetime import date, datetime
+# import re
+
+
+# class ClinicPatient(models.Model):
+#     _name = 'clinic.patient'
+#     _description = 'Patient Information Management'
+#     _order = 'name'
+#     _rec_name = 'name'
+#     _inherit = ['mail.thread', 'mail.activity.mixin']
+#     _sql_constraints = [
+#         ('patient_id_unique', 'UNIQUE(patient_id)', 'Patient ID must be unique!'),
+#         ('phone_format', 'CHECK(phone ~ \'^[0-9+\\-\\s\\(\\)]*$\')', 'Invalid phone number format!'),
+#         ('email_format', 'CHECK(email ~* \'^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$\' OR email IS NULL)', 'Invalid email format!')
+#     ]
+
+#     # Personal Information Fields
+#     name = fields.Char(
+#         string='Full Name', 
+#         required=True, 
+#         tracking=True,
+#         help="Patient's full legal name"
+#     )
+#     patient_id = fields.Char(
+#         string='Patient ID', 
+#         required=True, 
+#         copy=False, 
+#         readonly=True,
+#         default=lambda self: _('New'),
+#         tracking=True,
+#         help="Unique patient identifier"
+#     )
+#     date_of_birth = fields.Date(
+#         string='Date of Birth',
+#         tracking=True,
+#         help="Patient's birth date for age calculation"
+#     )
+#     age = fields.Integer(
+#         string='Age',
+#         compute='_compute_age',
+#         store=True,
+#         help="Automatically calculated from date of birth"
+#     )
+#     gender = fields.Selection([
+#         ('male', 'Male'),
+#         ('female', 'Female'),
+#         ('other', 'Other')
+#     ], string='Gender', required=True, tracking=True)
+    
+#     marital_status = fields.Selection([
+#         ('single', 'Single'),
+#         ('married', 'Married'),
+#         ('divorced', 'Divorced'),
+#         ('widowed', 'Widowed'),
+#         ('other', 'Other')
+#     ], string='Marital Status')
+    
+#     occupation = fields.Char(
+#         string='Occupation',
+#         help="Patient's occupation for occupational health considerations"
+#     )
+    
+
+#     # Contact Information Fields
+#     phone = fields.Char(
+#         string='Phone Number',
+#         tracking=True
+#     )
+
+#     city = fields.Char(string='City')
+
+
+#     allergies = fields.Text(
+#         string='Known Allergies',
+#         tracking=True,
+#         help="List all known allergies with severity and reaction details"
+#     )
+#     chronic_conditions = fields.Text(
+#         string='Chronic Conditions',
+#         tracking=True,
+#         help="Ongoing medical conditions requiring management"
+#     )
+#     past_history = fields.Text(
+#         string='Past History',
+#         tracking=True,
+#         help="Previous treatments, surgeries, and hospitalizations operations , accidences ,blood transfusion , disses  ,etc. "
+#     )
+#     current_medications = fields.Text(
+#         string='Current Medications',
+#         help="Current medication regimen from other providers"
+#     )
+#     family_history = fields.Text(
+#         string='Family Medical History',
+#         help="Relevant family medical history"
+#     )
+#     social_history = fields.Text(
+#         string='Special habits of medical importance',
+#         help="Smoking, alcohol, drug use, and lifestyle factors"
+#     )
+#     history_present_illness = fields.Text(
+#         string='History of Present Illness',
+#         help="Current illness history and symptoms"
+#     )
+#     # System Fields
+#     active = fields.Boolean(
+#         string='Active',
+#         default=True,
+#         help="Uncheck to archive the patient record"
+#     )
+#     notes = fields.Text(
+#         string='General Notes',
+#         help="Additional notes and observations"
+#     )
+
+
+#     # Relationship Fields
+#     vital_signs_ids = fields.One2many(
+#         'clinic.vital.signs',
+#         'patient_id',
+#         string='Vital Signs Records'
+#     )
+
+#     prescription_ids = fields.One2many('medical.prescription', 'patient_id', string="Prescriptions")    # Computed Fields
+
+
+#     vital_signs_count = fields.Integer(
+#         string='Vital Signs Count',
+#         compute='_compute_vital_signs_count'
+#     )
+#     prescription_count = fields.Integer(
+#         string='Prescription Count',
+#         compute='_compute_prescription_count'
+#     )
+#     last_visit_date = fields.Datetime(
+#         string='Last Visit',
+#         compute='_compute_last_visit_date'
+#     )
+#     main_complaint_ids = fields.One2many(
+#         "main.complaint",
+#         "patient_id",
+#         string="Main Complaints"
+#     )
+
+#     # Conditional fields
+#     gravida = fields.Integer("G (Gravida)")
+#     para = fields.Integer("P (Para)")
+#     abortion = fields.Integer("A (Abortion)")
+#     number_of_children = fields.Integer("Number of Children")
+
+#     contraception_history = fields.Selection([
+#         ('hormonal', 'Hormonal'),
+#         ('loop', 'Loop'),
+#         ('male_contraception', 'Male Contraception'),
+#     ], string="History of Contraception")
+
+#     puberty_age = fields.Integer("Puberty Age")
+#     menarche_age = fields.Integer("Menarche Age")
+#     chief_complaint = fields.Text(
+#         string='Chief Complaint',
+#         help="Primary reason for visit"
+#     )
+#     #lap  result  relation field
+#     lab_result_ids = fields.One2many('clinic.lab.result', 'patient_id', string='Lab Results')
+
+#     @api.depends('date_of_birth')
+#     def _compute_age(self):
+#         """Compute patient age from date of birth."""
+#         for record in self:
+#             if record.date_of_birth:
+#                 today = date.today()
+#                 birth_date = record.date_of_birth
+#                 record.age = today.year - birth_date.year - (
+#                     (today.month, today.day) < (birth_date.month, birth_date.day)
+#                 )
+#             else:
+#                 record.age = 0
+
+#     @api.depends('vital_signs_ids')
+#     def _compute_vital_signs_count(self):
+#         """Count vital signs records for the patient."""
+#         for record in self:
+#             record.vital_signs_count = len(record.vital_signs_ids)
+
+#     @api.depends('prescription_ids')
+#     def _compute_prescription_count(self):
+#         """Count prescriptions for the patient."""
+#         for record in self:
+#             record.prescription_count = len(record.prescription_ids)
+
+#     @api.depends('vital_signs_ids.visit_datetime')
+#     def _compute_last_visit_date(self):
+#         """Compute the last visit date from vital signs records."""
+#         for record in self:
+#             if record.vital_signs_ids:
+#                 record.last_visit_date = max(record.vital_signs_ids.mapped('visit_datetime'))
+#             else:
+#                 record.last_visit_date = False
+
+#     @api.model
+#     def create(self, vals):
+#         """Override create to generate patient ID sequence."""
+#         if vals.get('patient_id', _('New')) == _('New'):
+#             vals['patient_id'] = self.env['ir.sequence'].next_by_code('clinic.patient') or _('New')
+#         return super().create(vals)
+
+#     @api.constrains('date_of_birth')
+#     def _check_date_of_birth(self):
+#         """Validate date of birth is not in the future."""
+#         for record in self:
+#             if record.date_of_birth and record.date_of_birth > date.today():
+#                 raise ValidationError(_('Date of birth cannot be in the future.'))
+
+#     @api.constrains('age')
+#     def _check_age(self):
+#         """Validate age is within reasonable range."""
+#         for record in self:
+#             if record.age and (record.age < 0 or record.age > 150):
+#                 raise ValidationError(_('Age must be between 0 and 150 years.'))
+
+#     @api.constrains('phone', 'mobile')
+#     def _check_phone_format(self):
+#         """Validate phone number format."""
+#         phone_pattern = re.compile(r'^[0-9+\-\s\(\)]*$')
+#         for record in self:
+#             if record.phone and not phone_pattern.match(record.phone):
+#                 raise ValidationError(_('Invalid phone number format.'))
+
+#     def name_get(self):
+#         """Custom name display including patient ID."""
+#         result = []
+#         for record in self:
+#             name = f"[{record.patient_id}] {record.name}"
+#             if record.age:
+#                 name += f" ({record.age}y)"
+#             result.append((record.id, name))
+#         return result
+
+#     @api.model
+#     def name_search(self, name='', args=None, operator='ilike', limit=100):
+#         """Enhanced search by name, patient ID, or phone."""
+#         args = args or []
+#         domain = []
+        
+#         if name:
+#             domain = [
+#                 '|', '|', '|',
+#                 ('name', operator, name),
+#                 ('patient_id', operator, name),
+#                 ('phone', operator, name),
+#                 ('mobile', operator, name)
+#             ]
+        
+#         patients = self.search(domain + args, limit=limit)
+#         return patients.name_get()
+
+#     def action_view_vital_signs(self):
+#         """Action to view patient's vital signs records."""
+#         self.ensure_one()
+#         return {
+#             'name': _('Vital Signs'),
+#             'type': 'ir.actions.act_window',
+#             'res_model': 'clinic.vital.signs',
+#             'view_mode': 'list,form',
+#             'domain': [('patient_id', '=', self.id)],
+#             'context': {'default_patient_id': self.id},
+#             'target': 'current',
+#         }
+
+#     def action_view_prescriptions(self):
+#         """Action to view patient's prescriptions."""
+#         self.ensure_one()
+#         return {
+#             'name': _('Prescriptions'),
+#             'type': 'ir.actions.act_window',
+#             'res_model': 'medical.prescription',
+#             'view_mode': 'list,form',
+#             'domain': [('patient_id', '=', self.id)],
+#             'context': {'default_patient_id': self.id},
+#             'target': 'current',
+#         }
+
+#     def action_create_vital_signs(self):
+#         """Action to create new vital signs record for patient."""
+#         self.ensure_one()
+#         return {
+#             'name': _('Record Vital Signs'),
+#             'type': 'ir.actions.act_window',
+#             'res_model': 'clinic.vital.signs',
+#             'view_mode': 'form',
+#             'context': {'default_patient_id': self.id},
+#             'target': 'new',
+#         }
+
+#     def action_create_prescription(self):
+#         """Action to create new prescription for patient."""
+#         self.ensure_one()
+#         return {
+#             'name': _('Create Prescription'),
+#             'type': 'ir.actions.act_window',
+#             'res_model': 'medical.prescription',
+#             'view_mode': 'form',
+#             'context': {'default_patient_id': self.id},
+#             'target': 'new',
+#         }
+
+#     def archive_patient(self):
+#         """Archive patient record with confirmation."""
+#         self.ensure_one()
+#         if self.vital_signs_count > 0 or self.prescription_count > 0:
+#             raise UserError(_(
+#                 'Cannot archive patient with existing vital signs or prescriptions. '
+#                 'Please review and handle existing records first.'
+#             ))
+#         self.active = False
+#         self.message_post(body=_('Patient record archived.'))
+
+#     def unarchive_patient(self):
+#         """Unarchive patient record."""
+#         self.ensure_one()
+#         self.active = True
+#         self.message_post(body=_('Patient record reactivated.'))
 
