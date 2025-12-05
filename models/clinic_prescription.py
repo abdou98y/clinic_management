@@ -57,3 +57,6 @@ class Prescription(models.Model):
                      self.id, self.patient_id.name, len(self.treatment_line_ids))
 
         return self.env.ref('clinic_management.report_medical_prescription').report_action(self)
+
+    def open_auto_print(self):
+        return {'type': 'ir.actions.act_url', 'target': 'new', 'url': f'/prescription/print/{self.id}'}

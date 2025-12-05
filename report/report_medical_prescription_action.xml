@@ -1,27 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- 1. Make sure the ir.model reference exists (required for binding) -->
-    <record id="model_medical_prescription" model="ir.model">
-        <field name="model">medical.prescription</field>
-        <field name="name">Medical Prescription</field>
-    </record>
-
-    <!-- 2. The report itself – NO paperformat_id line (it does NOT exist in Odoo 19) -->
     <record id="report_medical_prescription" model="ir.actions.report">
-        <field name="name">Medical Prescription</field>
+        <field name="name">Medical Prescription (PDF)</field>
         <field name="model">medical.prescription</field>
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">clinic_management.template_medical_prescription</field>
         <field name="report_file">clinic_management.template_medical_prescription</field>
-
-        <!-- Safe filename when printing -->
-        <field name="print_report_name">('Prescription - %s' % (object.patient_id.name or object.name or 'New'))</field>
-
-        <!-- This makes “Print → Medical Prescription” appear in the header -->
+        <field name="print_report_name">'Prescription - %s' % (object.patient_id.name or 'New')</field>
         <field name="binding_model_id" ref="model_medical_prescription"/>
         <field name="binding_type">report</field>
-
-        <!-- Optional but recommended – prevents printing multiple records at once -->
-        <field name="multi">False</field>
     </record>
 </odoo>
+
+
+
+
+
+
+
+
+
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<odoo>-->
+
+<!--    &lt;!&ndash; 1. Custom A5 Paper Format (MUST come first) &ndash;&gt;-->
+<!--    <record id="prescription_a5_paperformat" model="report.paperformat">-->
+<!--        <field name="name">A5 Medical Prescription</field>-->
+<!--        <field name="format">A5</field>-->
+<!--        <field name="orientation">Portrait</field>-->
+<!--        <field name="margin_top">18</field>-->
+<!--        <field name="margin_bottom">22</field>-->
+<!--        <field name="margin_left">12</field>-->
+<!--        <field name="margin_right">12</field>-->
+<!--        <field name="header_spacing">0</field>-->
+<!--        <field name="dpi">96</field>-->
+<!--    </record>-->
+
+<!--    &lt;!&ndash; 2. Report Action (now correctly references the paperformat) &ndash;&gt;-->
+<!--    <record id="report_medical_prescription" model="ir.actions.report">-->
+<!--        <field name="name">Medical Prescription (PDF)</field>-->
+<!--        <field name="model">medical.prescription</field>-->
+<!--        <field name="report_type">qweb-pdf</field>-->
+<!--        <field name="report_name">clinic_management.template_medical_prescription</field>-->
+<!--        <field name="report_file">clinic_management.template_medical_prescription</field>-->
+<!--        <field name="print_report_name">'Prescription - %s' % (object.patient_id.name or object.name or 'New')</field>-->
+<!--        <field name="paperformat_id" ref="prescription_a5_paperformat"/>-->
+<!--        <field name="binding_model_id" ref="model_medical_prescription"/>-->
+<!--        <field name="binding_type">report</field>-->
+<!--    </record>-->
+
+<!--    &lt;!&ndash; 3. Model reference (safe to keep) &ndash;&gt;-->
+<!--    <record id="model_medical_prescription" model="ir.model">-->
+<!--        <field name="model">medical.prescription</field>-->
+<!--        <field name="name">Medical Prescription</field>-->
+<!--    </record>-->
+
+<!--</odoo>-->
+
+
+
+
+
+
+
+
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<odoo>-->
+<!--    &lt;!&ndash; 1. Make sure the ir.model reference exists (required for binding) &ndash;&gt;-->
+<!--    <record id="model_medical_prescription" model="ir.model">-->
+<!--        <field name="model">medical.prescription</field>-->
+<!--        <field name="name">Medical Prescription</field>-->
+<!--    </record>-->
+
+<!--    &lt;!&ndash; 2. The report itself – NO paperformat_id line (it does NOT exist in Odoo 19) &ndash;&gt;-->
+<!--    <record id="report_medical_prescription" model="ir.actions.report">-->
+<!--        <field name="name">Medical Prescription</field>-->
+<!--        <field name="model">medical.prescription</field>-->
+<!--        <field name="report_type">qweb-pdf</field>-->
+<!--        <field name="report_name">clinic_management.template_medical_prescription</field>-->
+<!--        <field name="report_file">clinic_management.template_medical_prescription</field>-->
+
+<!--        &lt;!&ndash; Safe filename when printing &ndash;&gt;-->
+<!--        <field name="print_report_name">('Prescription - %s' % (object.patient_id.name or object.name or 'New'))</field>-->
+
+<!--        &lt;!&ndash; This makes “Print → Medical Prescription” appear in the header &ndash;&gt;-->
+<!--        <field name="binding_model_id" ref="model_medical_prescription"/>-->
+<!--        <field name="binding_type">report</field>-->
+
+<!--        &lt;!&ndash; Optional but recommended – prevents printing multiple records at once &ndash;&gt;-->
+<!--        <field name="multi">False</field>-->
+<!--    </record>-->
+<!--</odoo>-->

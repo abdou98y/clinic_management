@@ -153,7 +153,7 @@
                                     <list>
                                         <field name="name" string="Prescription"/>  <!-- Displays the custom name -->
                                         <field name="create_date" string="Date"/>  <!-- Optional, hide by default -->
-                                        <button name="action_print_prescription" type="object" string="Print" class="btn-primary" icon="fa-print"/>
+                                        <button name="open_auto_print" type="object" string=    "Print" class="btn-primary" icon="fa-print"/>
                                     </list>
                                     <form>
                                         <sheet>
