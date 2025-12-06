@@ -164,17 +164,9 @@
                                                 <page string="Treatments">
                                                     <field name="treatment_line_ids">
                                                         <list editable="bottom">
-                                                            <field name="treatment_id" options="{'no_quick_create': True}"/>
+                                                            <field name="treatment_id"/>
                                                             <field name="usage_ar"/>
                                                         </list>
-                                                        <form>
-                                                            <sheet>
-                                                                <group>
-                                                                    <field name="treatment_id" options="{'no_quick_create': True}"/>
-                                                                    <field name="usage_ar"/>
-                                                                </group>
-                                                            </sheet>
-                                                        </form>
                                                     </field>
                                                 </page>
                                             </notebook>

@@ -18,7 +18,6 @@
         # Security
         'security/ir.model.access.csv',
         # Reports
-        'report/clinic_patient_report.xml',
         'report/report_medical_prescription.xml',
         'report/report_medical_prescription_action.xml',
         # Data
