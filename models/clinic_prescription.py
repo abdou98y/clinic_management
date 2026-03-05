@@ -37,15 +37,15 @@ class Prescription(models.Model):
                 rec.name = "New Prescription"
 
 
-    def name_get(self):
-        result = []
+    @api.depends('patient_id.name', 'create_date')
+    def _compute_display_name(self):
+        """Compute display name for prescription record."""
         for rec in self:
-            if rec.patient_id:
-                name = f"{rec.patient_id.name} - Prescription"
+            if rec.patient_id and rec.create_date:
+                date_str = rec.create_date.date().strftime('%Y-%m-%d')
+                rec.display_name = f"{rec.patient_id.name} - Prescription - {date_str}"
             else:
-                name = "New Prescription"
-            result.append((rec.id, name))
-        return result
+                rec.display_name = _("New Prescription")
 
     def action_print_prescription(self):
         self.ensure_one()

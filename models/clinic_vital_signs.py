@@ -165,32 +165,26 @@ class ClinicVitalSigns(models.Model):
     active = fields.Boolean(string='Active', default=True)
 
     # Display Fields
-    display_name = fields.Char(
-        string='Display Name',
-        compute='_compute_display_name',
-        store=True
-    )
-
+    # Display Fields
     main_complaint_id = fields.Many2one(
         "main.complaint",
         string="Main Complaint",
         ondelete="restrict",
         required=False,
-        # default=lambda self: self._get_default_main_complaint_id(),
+        default=lambda self: self._get_default_main_complaint_id(),
     )
 
+    def _get_default_main_complaint_id(self):
+        patient_id = self.env.context.get("default_patient_id")
+        if not patient_id:
+            patient_id = self.patient_id.id
 
-    # def _get_default_main_complaint_id(self):
-    #     patient_id = self.env.context.get("default_patient_id")
-    #     if not patient_id:
-    #         patient_id = self.patient_id.id
-    #
-    #     last_complaint = self.env['main.complaint'].search(
-    #         [('patient_id', '=', patient_id)],
-    #         order="id desc",
-    #         limit=1
-    #     )
-    #     return last_complaint.id if last_complaint else False
+        last_complaint = self.env['main.complaint'].search(
+            [('patient_id', '=', patient_id)],
+            order="id desc",
+            limit=1
+        )
+        return last_complaint.id if last_complaint else False
 
     @api.depends('patient_id', 'visit_datetime')
     def _compute_display_name(self):

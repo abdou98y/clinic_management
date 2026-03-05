@@ -25,7 +25,7 @@
         # Views
         'views/clinic_patient_views.xml',
         'views/clinic_vital_signs_views.xml',
-        'views/lap_result.xml',
+        'views/lab_result_views.xml',
         'views/clinic_menu.xml',
         'views/patient_complaint.xml',
         'views/prescription.xml',

@@ -1,9 +1,8 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_all_clinic_patient,access_all_clinic_patient,model_clinic_patient,,1,1,1,1
-access_all_clinic_vital_signs,access_all_clinic_vital_signs,model_clinic_vital_signs,,1,1,1,1
-access_all_medical_treatment,access_all_medical_treatment,model_medical_treatment,,1,1,1,1
-access_all_medical_treatment,access_all_medical_treatment,model_medical_treatment,,1,1,1,1
-access_all_medical_prescription,access_all_medical_prescription,model_medical_prescription,,1,1,1,1
-access_all_medical_prescription_line,access_all_medical_prescription_line,model_medical_prescription_line,,1,1,1,1
-access_all_main_complaint,access_all_main_complaint,model_main_complaint,,1,1,1,1
-access_all_clinic_lab_result,access_all_clinic_lab_result,model_clinic_lab_result,,1,1,1,1
+access_clinic_patient,clinic.patient,model_clinic_patient,base.group_user,1,1,1,1
+access_clinic_vital_signs,clinic.vital.signs,model_clinic_vital_signs,base.group_user,1,1,1,1
+access_medical_treatment,medical.treatment,model_medical_treatment,base.group_user,1,1,1,1
+access_medical_prescription,medical.prescription,model_medical_prescription,base.group_user,1,1,1,1
+access_medical_prescription_line,medical.prescription.line,model_medical_prescription_line,base.group_user,1,1,1,1
+access_main_complaint,main.complaint,model_main_complaint,base.group_user,1,1,1,1
+access_clinic_lab_result,clinic.lab.result,model_clinic_lab_result,base.group_user,1,1,1,1

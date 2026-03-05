@@ -12,6 +12,7 @@
                     <field name="age"/>
                     <field name="gender"/>
                     <field name="phone"/>
+                    <field name="mobile"/>
                     <field name="last_visit_date"/>
                     <field name="vital_signs_count"/>
                     <field name="prescription_count"/>
@@ -71,6 +72,7 @@
                             </group>
                             <group name="contact_info" string="Contact Information">
                                 <field name="phone"/>
+                                <field name="mobile"/>
                                 <field name="city"/>
                             </group>
                             <!-- Conditional: Gestational History for non-single females -->

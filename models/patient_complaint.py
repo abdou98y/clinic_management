@@ -13,14 +13,14 @@ class MainComplaint(models.Model):
         'main_complaint_id',
         string="Vital Signs"
     )
-    def name_get(self):
-        result = []
+    @api.depends('description', 'date')
+    def _compute_display_name(self):
+        """Compute display name for main complaint record."""
         for rec in self:
-            name = rec.description or rec.date.strftime('%Y-%m-%d')
+            name = rec.description or (rec.date.strftime('%Y-%m-%d') if rec.date else _("New Complaint"))
             if len(name) > 53:
                 name = name[:50] + '...'
-            result.append((rec.id, name))
-        return result
+            rec.display_name = name
 
     @api.model
     def default_get(self, fields_list):
